@@ -47,9 +47,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
 	*/
 	
+	// Movement variables related
 	int counter = 0;
-	int coordXStart = 0;
-	int coordYStart = 0;
+	int lastKey = 0x00;
 	
 	const char playerSprite[3][9] = {
 		{'_', '_', '_', '.', '_', '_', '_', ' ', ' ' },
@@ -62,8 +62,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	};
 	const int playerHeight = sizeof(playerSprite) / sizeof(playerSprite[0]);
 	const int playerWidth = sizeof(playerSprite[0]);
-	// playerPosition[0] : X, playerPosition[1] : Y, 
-	int playerPosition[2] = { coordXStart, coordYStart };
+	
+	int coordXStart = 0;
+	int coordYStart = 0;
+	
+	struct position {
+		int x;
+		int y;
+	};
+
+	position playerPosition;
+	playerPosition.x = coordXStart;
+	playerPosition.y = coordYStart;
 
 	double elapsed = 0;
 
@@ -93,8 +103,8 @@ int _tmain(int argc, _TCHAR* argv[])
 				for (int l = 0; l < playerWidth; l++)
 				{
 					// buffer[0 + k][coordXStart + l].Char.AsciiChar = player_sprite[k][l];
-					buffer[playerPosition[1] + k][playerPosition[0] + l].Char.AsciiChar = playerSprite[k][l];
-					buffer[playerPosition[1] + k][playerPosition[0] + l].Attributes = FOREGROUND_GREEN;
+					buffer[playerPosition.y + k][playerPosition.x + l].Char.AsciiChar = playerSprite[k][l];
+					buffer[playerPosition.y + k][playerPosition.x + l].Attributes = FOREGROUND_GREEN;
 					// buffer[0 + k][0 + l].Char.AsciiChar = player_sprite[k][l];
 				}
 			}
@@ -102,19 +112,65 @@ int _tmain(int argc, _TCHAR* argv[])
 			WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
 
 			if (GetKeyState(VK_DOWN) < 0) {
-				counter++;
+				if (lastKey == VK_DOWN) {
+					counter++;
+				}
+				else {
+					counter = 1;
+					lastKey = VK_DOWN;
+				}
+			}
+
+			if (GetKeyState(VK_UP) < 0) {
+				if (lastKey == VK_UP) {
+					counter++;
+				}
+				else {
+					counter = 1;
+					lastKey = VK_UP;
+				}
+			}
+
+			if (GetKeyState(VK_RIGHT) < 0) {
+				if (lastKey == VK_RIGHT) {
+					counter++;
+				}
+				else {
+					counter = 1;
+					lastKey = VK_RIGHT;
+				}
+			}
+
+			if (GetKeyState(VK_LEFT) < 0) {
+				if (lastKey == VK_LEFT) {
+					counter++;
+				}
+				else {
+					counter = 1;
+					lastKey = VK_LEFT;
+				}
 			}
 			
 			// Counter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
 			if (counter == 4) {
 
-				// Check player collision with the ground, if so we stop him
-				if ((playerPosition[1] + 1 + playerHeight) <= SCREEN_HEIGHT) {
-					// TODO : Use user-input to manage movement
-					// Make the player move of one tile on Y axis
-					playerPosition[1] ++;
+				if (lastKey == VK_RIGHT) {
+					playerPosition.x += 2;
 				}
-				// END of player collision with the ground
+
+				if (lastKey == VK_LEFT) {
+					playerPosition.x -= 2;
+				}
+
+				if (lastKey == VK_UP) {
+					playerPosition.y--;
+				}
+
+				// Check player collision with the ground, if so we stop him
+				if (lastKey == VK_DOWN && (playerPosition.y + 1 + playerHeight) <= SCREEN_HEIGHT) {
+					playerPosition.y++;
+				}
+
 				
 				// playerPosition[0] ++;
 
