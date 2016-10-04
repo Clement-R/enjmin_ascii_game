@@ -12,6 +12,8 @@
 #define SCREEN_WIDTH	240
 #define SCREEN_HEIGHT	 30
 #define MS_PER_UPDATE    32
+#define PLAYER_X_SPEED    4
+#define PLAYER_Y_SPEED    1
 
 /*
 const int CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE;
@@ -111,6 +113,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
 
+			// Manage keyboard events, if a pkey is pressed we increase the counter and after
+			// a number of events we move the player accordingly
 			if (GetKeyState(VK_DOWN) < 0) {
 				if (lastKey == VK_DOWN) {
 					counter++;
@@ -155,23 +159,22 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (counter == 4) {
 
 				if (lastKey == VK_RIGHT) {
-					playerPosition.x += 2;
+					playerPosition.x += PLAYER_X_SPEED;
 				}
 
 				if (lastKey == VK_LEFT) {
-					playerPosition.x -= 2;
+					playerPosition.x -= PLAYER_X_SPEED;
 				}
 
-				if (lastKey == VK_UP) {
-					playerPosition.y--;
+				if (lastKey == VK_UP && (playerPosition.y - PLAYER_Y_SPEED) >= 0) {
+					playerPosition.y -= PLAYER_Y_SPEED;
 				}
 
 				// Check player collision with the ground, if so we stop him
-				if (lastKey == VK_DOWN && (playerPosition.y + 1 + playerHeight) <= SCREEN_HEIGHT) {
-					playerPosition.y++;
+				if (lastKey == VK_DOWN && (playerPosition.y + PLAYER_Y_SPEED + playerHeight) <= SCREEN_HEIGHT) {
+					playerPosition.y += PLAYER_Y_SPEED;
 				}
 
-				
 				// playerPosition[0] ++;
 
 				counter = 0;
