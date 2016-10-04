@@ -51,11 +51,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	int coordXStart = 0;
 	int coordYStart = 0;
 	
-	const char playerSprite[4][5] = {
-		{ '-', '-', '-', '-', '-' },
+	const char playerSprite[3][9] = {
+		{'_', '_', '_', '.', '_', '_', '_', ' ', ' ' },
+		{' ', ' ', '(', '_', ']', '=', '=', '=', '*' },
+		{' ', ' ', 'o', ' ', '0', ' ', ' ', ' ', ' '}
+		/*{ '-', '-', '-', '-', '-' },
 		{ ' ', ' ', '|', ' ', ' ' },
 		{ '*', '*', '*', '*', '*' },
-		{ '*', '*', '*', '*', '*' }
+		{ '*', '*', '*', '*', '*' }*/
 	};
 	const int playerHeight = sizeof(playerSprite) / sizeof(playerSprite[0]);
 	const int playerWidth = sizeof(playerSprite[0]);
@@ -97,8 +100,11 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
+
+			if (GetKeyState(VK_DOWN) < 0) {
+				counter++;
+			}
 			
-			counter++;
 			// Counter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
 			if (counter == 4) {
 
