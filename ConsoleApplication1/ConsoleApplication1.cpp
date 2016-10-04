@@ -9,7 +9,7 @@
 #include "NYTimer.h"
 
 #define WIN32_LEAN_AND_MEAN
-#define SCREEN_WIDTH	240
+#define SCREEN_WIDTH	112
 #define SCREEN_HEIGHT	 30
 #define MAP_WIDTH       480
 
@@ -81,13 +81,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			if (j % 2 == 0) {
-				map1[i][j] = '0';
-			}
-			else {
-				map1[i][j] = '1';
-			}
-			
+			map1[i][j] = *to_string(abs(j/SCREEN_WIDTH)).c_str();
 		}
 	}
 
@@ -104,8 +98,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// Camera informations
 	position cameraPosition;
-	cameraPosition.x = 0;
-	cameraPosition.y = 0;
+	cameraPosition.x = playerPosition.x;
+	cameraPosition.y = playerPosition.y;
 
 	// Game loop
 	double elapsed = 0;
@@ -172,10 +166,10 @@ int _tmain(int argc, _TCHAR* argv[])
 				}
 			}
 			
-			// Counter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
+			// frameCounter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
 			if (frameCounter == 4) {
 
-				if (lastKey == VK_RIGHT && (playerPosition.x + PLAYER_X_SPEED) <= MAP_WIDTH) {
+				if (lastKey == VK_RIGHT && (playerPosition.x + PLAYER_X_SPEED) <= SCREEN_WIDTH) {
 					playerPosition.x += PLAYER_X_SPEED;
 					cameraPosition.x += PLAYER_X_SPEED;
 				}
@@ -195,7 +189,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				}
 
 				// DEBUG
-				OutputDebugStringA(to_string(cameraPosition.x).c_str());
+				OutputDebugStringA(to_string(playerPosition.x).c_str());
 				OutputDebugStringA("\n");
 				// ENDOF DEBUG
 
