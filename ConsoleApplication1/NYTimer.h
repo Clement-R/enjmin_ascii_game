@@ -7,15 +7,15 @@
 
 class NYTimer
 {
-public:
-	LARGE_INTEGER lastUpdateTime;
-	LONGLONG freq;
+	public:
+		LARGE_INTEGER lastUpdateTime;
+		LONGLONG freq;
 
-	NYTimer();
-	void start(void);
-	float getElapsedSeconds(bool restart );
-	unsigned long getElapsedMs(bool restart);
-	~NYTimer();
+		NYTimer();
+		void start(void);
+		float getElapsedSeconds(bool restart );
+		unsigned long getElapsedMs(bool restart);
+		~NYTimer();
 };
 
 #endif
