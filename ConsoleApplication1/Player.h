@@ -13,7 +13,7 @@ class Player : public Entity
 		Position playerPosition;
 		int playerXSpeed = 4;
 		int playerYSpeed = 1;
-
+		bool isOnFloor = false;
 		Player(int life);
 		Player(int life, int x, int y);
 		~Player();

@@ -10,7 +10,7 @@
 #include "Player.h"
 #include "Position.h"
 #include "Screen.h"
-
+#include "World.h"
 #define WIN32_LEAN_AND_MEAN
 
 #define MAP_WIDTH       480
@@ -55,6 +55,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Initialize player
 	Player player = Player(5);
 
+	// Initialize World
+	World world =  World();
 	// Movement variables related
 	int frameCounter = 0;
 	int lastKey = 0x00;
@@ -74,12 +76,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	const int playerHeight = sizeof(player.playerSprite) / sizeof(player.playerSprite[0]);
 	const int playerWidth = sizeof(player.playerSprite[0]);
 	
-	int coordXStart = 0;
-	int coordYStart = 0;
-	
-	player.playerPosition.x = coordXStart;
-	player.playerPosition.y = coordYStart;
-
 	// Camera informations
 	Position cameraPosition;
 	cameraPosition.x = player.playerPosition.x;
@@ -153,18 +149,25 @@ int _tmain(int argc, _TCHAR* argv[])
 			// frameCounter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
 			if (frameCounter == 4) {
 
-				if (lastKey == VK_RIGHT && (player.playerPosition.x + player.playerXSpeed) <= screen.SCREEN_WIDTH) {
-					player.playerPosition.x += player.playerXSpeed;
+				if (lastKey == VK_RIGHT && (cameraPosition.x + player.playerXSpeed) <= screen.SCREEN_WIDTH) {
+					//player.playerPosition.x += player.playerXSpeed;
 					cameraPosition.x += player.playerXSpeed;
 				}
 
-				if (lastKey == VK_LEFT && (player.playerPosition.x - player.playerXSpeed) >= 0) {
-					player.playerPosition.x -= player.playerXSpeed;
+				if (lastKey == VK_LEFT && (cameraPosition.x - player.playerXSpeed) >= 0) {
+					//player.playerPosition.x -= player.playerXSpeed;
 					cameraPosition.x -= player.playerXSpeed;
 				}
 
 				if (lastKey == VK_UP && (player.playerPosition.y - player.playerYSpeed) >= 0) {
-					player.playerPosition.y -= player.playerYSpeed;
+					if (player.isOnFloor)
+					{
+						player.isOnFloor = false;
+						player.playerPosition.y -= player.playerYSpeed * 6;
+					}
+					else
+						player.playerPosition.y -= player.playerYSpeed;
+					
 				}
 
 				// Check player collision with the ground, if so we stop him
@@ -172,12 +175,20 @@ int _tmain(int argc, _TCHAR* argv[])
 					player.playerPosition.y += player.playerYSpeed;
 				}
 
+				
 				// DEBUG
 				OutputDebugStringA(to_string(player.playerPosition.x).c_str());
 				OutputDebugStringA("\n");
 				// ENDOF DEBUG
 
 				frameCounter = 0;
+				//lastKey = 0;
+			}
+
+			if (!player.isOnFloor && lastKey != VK_UP){
+				player.playerPosition.y += world.gravity;
+				if ((player.playerPosition.y + playerHeight) >= screen.SCREEN_HEIGHT)
+					player.isOnFloor = true;
 			}
 
 			elapsed = nyt->getElapsedMs(true);

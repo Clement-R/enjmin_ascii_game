@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-
+#include "Screen.h"
 #include <fstream>
 
 using namespace std;
@@ -31,8 +31,8 @@ Player::Player(int life)
 	}
 
 	this->life = life;
-	this->playerPosition.x = 0;
-	this->playerPosition.y = 0;
+	this->playerPosition.x = this->PLAYER_WIDTH;
+	this->playerPosition.y = Screen::SCREEN_HEIGHT/2;
 }
 
 
