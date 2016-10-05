@@ -34,12 +34,6 @@ const int PINK = PURPLE | FOREGROUND_INTENSITY;
 
 using namespace std;
 
-// Custom structures used in the game
-struct position {
-	int x;
-	int y;
-};
-
 void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[SCREEN_HEIGHT][SCREEN_WIDTH], position cameraPosition) {
 	for (int i = 0; i < SCREEN_HEIGHT; i++)
 	{
@@ -56,7 +50,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Initialize a new timer
 	NYTimer* nyt =  new NYTimer();
 	
-	// Initialize buffer that's going to be drawn
+	// Initialize buffer that's going to be drawn and window size
 	HANDLE hOutput = (HANDLE)GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD dwBufferSize = { SCREEN_WIDTH, SCREEN_HEIGHT };
 	COORD dwBufferCoord = { 0, 0 };
@@ -71,13 +65,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Movement variables related
 	int frameCounter = 0;
 	int lastKey = 0x00;
-	
-	// Sprites
-	const char playerSprite[3][9] = {
-		{'_', '_', '_', '.', '_', '_', '_', ' ', ' ' },
-		{' ', ' ', '(', '_', ']', '=', '=', '=', '*' },
-		{' ', ' ', 'o', ' ', '0', ' ', ' ', ' ', ' '}
-	};
 
 	// Maps
 	char map1[SCREEN_HEIGHT][MAP_WIDTH];
