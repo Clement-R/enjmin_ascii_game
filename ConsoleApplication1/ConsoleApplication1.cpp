@@ -10,7 +10,7 @@
 #include "Player.h"
 #include "Position.h"
 #include "Screen.h"
-
+#include "World.h"
 #define WIN32_LEAN_AND_MEAN
 
 #define MAP_WIDTH       480
@@ -55,6 +55,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Initialize player
 	Player player = Player(5);
 
+	// Initialize World
+	World world =  World();
 	// Movement variables related
 	int frameCounter = 0;
 	int gameCounter = 0;
@@ -126,8 +128,13 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				if (lastKey == VK_SPACE && (player.playerPosition.y - player.playerYSpeed) >= 0) {
 					player.playerPosition.y -= player.playerYSpeed * 2;
+
+				// Check player collision with the ground, if so we stop him
+				if (lastKey == VK_DOWN && (player.playerPosition.y + player.playerYSpeed + playerHeight) <= screen.SCREEN_HEIGHT) {
+					player.playerPosition.y += player.playerYSpeed;
 				}
 
+				
 				// DEBUG
 				/*
 				OutputDebugStringA(to_string(player.playerPosition.x).c_str());
@@ -136,6 +143,13 @@ int _tmain(int argc, _TCHAR* argv[])
 				// ENDOF DEBUG
 
 				frameCounter = 0;
+				//lastKey = 0;
+			}
+
+			if (!player.isOnFloor && lastKey != VK_UP){
+				player.playerPosition.y += world.gravity;
+				if ((player.playerPosition.y + playerHeight) >= screen.SCREEN_HEIGHT)
+					player.isOnFloor = true;
 			}
 
 			if (gameCounter % 6 == 0) {
