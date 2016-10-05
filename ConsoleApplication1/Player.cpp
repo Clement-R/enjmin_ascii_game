@@ -1,11 +1,35 @@
 #include "stdafx.h"
 #include "Player.h"
 
+#include <fstream>
+
+using namespace std;
 
 Player::Player(int life)
 {
-	// TODO : load sprite from external file
-	// this->playerSprite;
+	char data[29];
+	ifstream is("player_sprite");
+	
+	int position = 0;
+	while (!is.eof())
+	{
+		//reading one character from file to array
+		is.get(data[position]);
+		position++;
+	}
+
+	int counter = 0;
+	for (int i = 0; i < this->PLAYER_HEIGHT; i++)
+	{
+		for (int j = 0; j < this->PLAYER_WIDTH; j++)
+		{
+			if (data[counter] != '\n') {
+				this->playerSprite[i][j] = data[counter];
+			}
+			counter++;
+		}
+	}
+
 	this->life = life;
 	this->playerPosition.x = 0;
 	this->playerPosition.y = 0;

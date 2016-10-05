@@ -9,7 +9,7 @@ class Player : public Entity
 		static const int PLAYER_WIDTH= 9;
 		static const int PLAYER_HEIGHT = 3;
 
-		char *playerSprite[PLAYER_HEIGHT][PLAYER_WIDTH];
+		char playerSprite[PLAYER_HEIGHT][PLAYER_WIDTH];
 		Position playerPosition;
 		int playerXSpeed = 4;
 		int playerYSpeed = 1;
