@@ -33,10 +33,10 @@ const int PINK = PURPLE | FOREGROUND_INTENSITY;
 
 using namespace std;
 
-void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[SCREEN_HEIGHT][SCREEN_WIDTH], Position cameraPosition) {
-	for (int i = 0; i < SCREEN_HEIGHT; i++)
+void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition) {
+	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
 	{
-		for (int j = 0; j < SCREEN_WIDTH; j++)
+		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
 		{
 			buffer[i][j].Char.AsciiChar = map[i][j + cameraPosition.x];
 			buffer[i][j].Attributes = WHITE;
@@ -60,13 +60,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	int lastKey = 0x00;
 
 	// Maps
-	char map1[SCREEN_HEIGHT][MAP_WIDTH];
+	char map1[screen.SCREEN_HEIGHT][MAP_WIDTH];
 	int mapWidthCounter = 0;
-	for (int i = 0; i < SCREEN_HEIGHT; i++)
+	for (int i = 0; i < screen.SCREEN_HEIGHT; i++)
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			map1[i][j] = *to_string(abs(j/SCREEN_WIDTH)).c_str();
+			map1[i][j] = *to_string(abs(j/ screen.SCREEN_WIDTH)).c_str();
 		}
 	}
 
@@ -153,23 +153,23 @@ int _tmain(int argc, _TCHAR* argv[])
 			// frameCounter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
 			if (frameCounter == 4) {
 
-				if (lastKey == VK_RIGHT && (player.playerPosition.x + PLAYER_X_SPEED) <= SCREEN_WIDTH) {
-					player.playerPosition.x += PLAYER_X_SPEED;
-					cameraPosition.x += PLAYER_X_SPEED;
+				if (lastKey == VK_RIGHT && (player.playerPosition.x + player.playerXSpeed) <= screen.SCREEN_WIDTH) {
+					player.playerPosition.x += player.playerXSpeed;
+					cameraPosition.x += player.playerXSpeed;
 				}
 
-				if (lastKey == VK_LEFT && (player.playerPosition.x - PLAYER_X_SPEED) >= 0) {
-					player.playerPosition.x -= PLAYER_X_SPEED;
-					cameraPosition.x -= PLAYER_X_SPEED;
+				if (lastKey == VK_LEFT && (player.playerPosition.x - player.playerXSpeed) >= 0) {
+					player.playerPosition.x -= player.playerXSpeed;
+					cameraPosition.x -= player.playerXSpeed;
 				}
 
-				if (lastKey == VK_UP && (player.playerPosition.y - PLAYER_Y_SPEED) >= 0) {
-					player.playerPosition.y -= PLAYER_Y_SPEED;
+				if (lastKey == VK_UP && (player.playerPosition.y - player.playerYSpeed) >= 0) {
+					player.playerPosition.y -= player.playerYSpeed;
 				}
 
 				// Check player collision with the ground, if so we stop him
-				if (lastKey == VK_DOWN && (player.playerPosition.y + PLAYER_Y_SPEED + playerHeight) <= SCREEN_HEIGHT) {
-					player.playerPosition.y += PLAYER_Y_SPEED;
+				if (lastKey == VK_DOWN && (player.playerPosition.y + player.playerYSpeed + playerHeight) <= screen.SCREEN_HEIGHT) {
+					player.playerPosition.y += player.playerYSpeed;
 				}
 
 				// DEBUG
