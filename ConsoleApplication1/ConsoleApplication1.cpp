@@ -9,10 +9,10 @@
 #include "NYTimer.h"
 #include "Player.h"
 #include "Position.h"
+#include "Screen.h"
 
 #define WIN32_LEAN_AND_MEAN
-#define SCREEN_WIDTH	120
-#define SCREEN_HEIGHT	 30
+
 #define MAP_WIDTH       480
 
 #define MS_PER_UPDATE    32
@@ -52,17 +52,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Initialize a new timer
 	NYTimer* nyt =  new NYTimer();
 	
-	// Initialize buffer that's going to be drawn and window size
-	HANDLE hOutput = (HANDLE)GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD dwBufferSize = { SCREEN_WIDTH, SCREEN_HEIGHT };
-	COORD dwBufferCoord = { 0, 0 };
-	
-	SetConsoleScreenBufferSize(hOutput, dwBufferSize);
-
-	SMALL_RECT rcRegion = { 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1 };
-	CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
-
-	SetConsoleWindowInfo(hOutput, TRUE, &rcRegion);
+	// Initialize screen
+	Screen screen = Screen();
 	
 	// Initialize player
 	Player player = Player(5);
@@ -104,21 +95,21 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		// Check if one frame time has passed, we update the game 30FPS
 		if (elapsed > MS_PER_UPDATE){
-			ReadConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
+			screen.read();
 
-			drawMap(map1, buffer, cameraPosition);
+			drawMap(map1, screen.buffer, cameraPosition);
 
 			// Draw player
 			for (int k = 0; k < playerHeight; k++)
 			{
 				for (int l = 0; l < playerWidth; l++)
 				{
-					buffer[player.playerPosition.y + k][player.playerPosition.x + l].Char.AsciiChar = player.playerSprite[k][l];
-					buffer[player.playerPosition.y + k][player.playerPosition.x + l].Attributes = FOREGROUND_GREEN;
+					screen.buffer[player.playerPosition.y + k][player.playerPosition.x + l].Char.AsciiChar = player.playerSprite[k][l];
+					screen.buffer[player.playerPosition.y + k][player.playerPosition.x + l].Attributes = FOREGROUND_GREEN;
 				}
 			}
 
-			WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
+			screen.display();
 
 			// Manage keyboard events, if a pkey is pressed we increase the counter and after
 			// a number of events we move the player accordingly
