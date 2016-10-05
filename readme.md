@@ -1,4 +1,5 @@
 TODO
+    
     Iteration 1
     - Draw map
     - Camera system (make map move when player move)
@@ -8,7 +9,7 @@ TODO
     - Add life system to the player
     - Make player loose life on collision with obstacles
     - Add few invulnerability frames when player is hurt
-    - Destroy player when life = 0 
+    - Destroy player when life = 0
     
     Iteration 2
     - Draw hostages
@@ -31,6 +32,8 @@ TODO
     Iteration 4
     - Add game over screen and restart button
     - Add start screen
+
+    Iteration 5
     - Add music to start screen
     - Add music during the game
     - Add sound on player getting hit
