@@ -6,11 +6,10 @@
 class Player : public Entity
 {
 	public:
-		const char playerSprite[3][9] = {
-			{ '_', '_', '_', '.', '_', '_', '_', ' ', ' ' },
-			{ ' ', ' ', '(', '_', ']', '=', '=', '=', '*' },
-			{ ' ', ' ', 'o', ' ', '0', ' ', ' ', ' ', ' ' }
-		};
+		static const int PLAYER_WIDTH= 9;
+		static const int PLAYER_HEIGHT = 3;
+
+		char *playerSprite[PLAYER_HEIGHT][PLAYER_WIDTH];
 		Position playerPosition;
 		int playerXSpeed = 4;
 		int playerYSpeed = 1;

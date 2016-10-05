@@ -4,6 +4,8 @@
 
 Player::Player(int life)
 {
+	// TODO : load sprite from external file
+	// this->playerSprite;
 	this->life = life;
 	this->playerPosition.x = 0;
 	this->playerPosition.y = 0;
