@@ -1,6 +1,6 @@
 #pragma once
 class Entity
 {
-public:
-	virtual void update() = 0;
+	public:
+		virtual void update() = 0;
 };
