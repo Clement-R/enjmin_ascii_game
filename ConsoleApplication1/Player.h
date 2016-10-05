@@ -11,7 +11,7 @@ class Player : public Entity
 
 		char playerSprite[PLAYER_HEIGHT][PLAYER_WIDTH];
 		Position playerPosition;
-		int playerXSpeed = 4;
+		int playerXSpeed = 0;
 		int playerYSpeed = 4;
 		bool isOnFloor = false;
 

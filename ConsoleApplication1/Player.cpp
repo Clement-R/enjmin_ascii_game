@@ -31,7 +31,7 @@ Player::Player(int life)
 	}
 
 	this->life = life;
-	this->playerPosition.x = 15;
+	this->playerPosition.x = 0;
 	this->playerPosition.y = 0;
 
 	this->playerPosition.x = this->PLAYER_WIDTH;
