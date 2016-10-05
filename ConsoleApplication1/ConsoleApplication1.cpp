@@ -9,7 +9,7 @@
 #include "NYTimer.h"
 
 #define WIN32_LEAN_AND_MEAN
-#define SCREEN_WIDTH	112
+#define SCREEN_WIDTH	120
 #define SCREEN_HEIGHT	 30
 #define MAP_WIDTH       480
 
@@ -60,8 +60,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	HANDLE hOutput = (HANDLE)GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD dwBufferSize = { SCREEN_WIDTH, SCREEN_HEIGHT };
 	COORD dwBufferCoord = { 0, 0 };
+	
+	SetConsoleScreenBufferSize(hOutput, dwBufferSize);
+
 	SMALL_RECT rcRegion = { 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1 };
 	CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
+
+	SetConsoleWindowInfo(hOutput, TRUE, &rcRegion);
 	
 	// Movement variables related
 	int frameCounter = 0;
