@@ -142,12 +142,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			if (gameCounter % 6 == 0) {
-				if (!player.isOnFloor && lastKey != VK_UP) {
-					// player.playerPosition.y += world.gravity;
-					player.playerPosition.y += player.playerYSpeed / 2;
-					if ((player.playerPosition.y + playerHeight) >= screen.SCREEN_HEIGHT)
-						player.isOnFloor = true;
-				}
+				// player.playerPosition.y += world.gravity;
+				player.playerPosition.y += player.playerYSpeed / 2;
+				if ((player.playerPosition.y + playerHeight) >= screen.SCREEN_HEIGHT)
+					player.isOnFloor = true;
 			}
 
 			if (player.playerPosition.y <= 0) {
@@ -157,6 +155,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			++gameCounter;
 			elapsed = nyt->getElapsedMs(true);
 		}
+	}
+
+	// wait the player to push SPACEBAR to 
+	while ((GetKeyState(VK_SPACE) == 0)) {
 	}
 
 	return 0;
