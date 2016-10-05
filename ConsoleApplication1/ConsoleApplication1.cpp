@@ -79,8 +79,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// Camera informations
 	Position cameraPosition;
-	cameraPosition.x = player.playerPosition.x;
-	cameraPosition.y = player.playerPosition.y;
+	cameraPosition.x = player.position.x;
+	cameraPosition.y = player.position.y;
 
 	// Game loop
 	double elapsed = 0;
@@ -94,7 +94,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			drawMap(map1, screen.buffer, cameraPosition);
 
 			// Death condition
-			if ((player.playerPosition.y + player.playerYSpeed) > Screen::SCREEN_HEIGHT) {
+			if ((player.position.y + player.playerYSpeed) > Screen::SCREEN_HEIGHT) {
 				// Stop the game
 				break;
 			}
@@ -104,8 +104,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				for (int l = 0; l < playerWidth; l++)
 				{
-					screen.buffer[player.playerPosition.y + k][player.playerPosition.x + l].Char.AsciiChar = player.playerSprite[k][l];
-					screen.buffer[player.playerPosition.y + k][player.playerPosition.x + l].Attributes = FOREGROUND_GREEN;
+					screen.buffer[player.position.y + k][player.position.x + l].Char.AsciiChar = player.playerSprite[k][l];
+					screen.buffer[player.position.y + k][player.position.x + l].Attributes = FOREGROUND_GREEN;
 				}
 			}
 
@@ -126,8 +126,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			// frameCounter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
 			if (frameCounter == 4) {
 
-				if (lastKey == VK_SPACE && (player.playerPosition.y - player.playerYSpeed) >= 0) {
-					player.playerPosition.y -= player.playerYSpeed * 2;
+				if (lastKey == VK_SPACE && (player.position.y - player.playerYSpeed) >= 0) {
+					player.position.y -= player.playerYSpeed * 2;
 				}
 
 				// DEBUG
@@ -143,13 +143,13 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			if (gameCounter % 6 == 0) {
 				// player.playerPosition.y += world.gravity;
-				player.playerPosition.y += player.playerYSpeed / 2;
-				if ((player.playerPosition.y + playerHeight) >= screen.SCREEN_HEIGHT)
+				player.position.y += player.playerYSpeed / 2;
+				if ((player.position.y + playerHeight) >= screen.SCREEN_HEIGHT)
 					player.isOnFloor = true;
 			}
 
-			if (player.playerPosition.y <= 0) {
-				player.playerPosition.y = 0;
+			if (player.position.y <= 0) {
+				player.position.y = 0;
 			}
 
 			++gameCounter;
