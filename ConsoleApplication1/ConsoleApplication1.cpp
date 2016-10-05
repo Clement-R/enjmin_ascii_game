@@ -36,27 +36,28 @@ using namespace std;
 void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition) {
 	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
 	{
-		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
-		{
-			buffer[i][j].Char.AsciiChar = map[i][j + cameraPosition.x];
-			buffer[i][j].Attributes = WHITE;
-		}
+	for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
+	{
+		buffer[i][j].Char.AsciiChar = map[i][j + cameraPosition.x];
+		buffer[i][j].Attributes = WHITE;
+	}
 	}
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	// Initialize a new timer
-	NYTimer* nyt =  new NYTimer();
-	
+	NYTimer* nyt = new NYTimer();
+
 	// Initialize screen
 	Screen screen = Screen();
-	
+
 	// Initialize player
 	Player player = Player(5);
 
 	// Movement variables related
 	int frameCounter = 0;
+	int gameCounter = 0;
 	int lastKey = 0x00;
 
 	// Maps
@@ -66,19 +67,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			map1[i][j] = *to_string(abs(j/ screen.SCREEN_WIDTH)).c_str();
+			map1[i][j] = *to_string(abs(j / screen.SCREEN_WIDTH)).c_str();
 		}
 	}
 
 	// Players informations
 	const int playerHeight = sizeof(player.playerSprite) / sizeof(player.playerSprite[0]);
 	const int playerWidth = sizeof(player.playerSprite[0]);
-	
-	int coordXStart = 0;
-	int coordYStart = 0;
-	
-	player.playerPosition.x = coordXStart;
-	player.playerPosition.y = coordYStart;
 
 	// Camera informations
 	Position cameraPosition;
@@ -87,14 +82,20 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// Game loop
 	double elapsed = 0;
-	while (true){
+	while (true) {
 		elapsed = nyt->getElapsedMs(false);
 
 		// Check if one frame time has passed, we update the game 30FPS
-		if (elapsed > MS_PER_UPDATE){
+		if (elapsed > MS_PER_UPDATE) {
 			screen.read();
 
 			drawMap(map1, screen.buffer, cameraPosition);
+
+			// Death condition
+			if ((player.playerPosition.y + player.playerYSpeed) > Screen::SCREEN_HEIGHT) {
+				// Stop the game
+				break;
+			}
 
 			// Draw player
 			for (int k = 0; k < playerHeight; k++)
@@ -110,76 +111,43 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			// Manage keyboard events, if a pkey is pressed we increase the counter and after
 			// a number of events we move the player accordingly
-			if (GetKeyState(VK_DOWN) < 0) {
-				if (lastKey == VK_DOWN) {
+			if (GetKeyState(VK_SPACE) < 0) {
+				if (lastKey == VK_SPACE) {
 					frameCounter++;
 				}
 				else {
 					frameCounter = 1;
-					lastKey = VK_DOWN;
+					lastKey = VK_SPACE;
 				}
 			}
 
-			if (GetKeyState(VK_UP) < 0) {
-				if (lastKey == VK_UP) {
-					frameCounter++;
-				}
-				else {
-					frameCounter = 1;
-					lastKey = VK_UP;
-				}
-			}
-
-			if (GetKeyState(VK_RIGHT) < 0) {
-				if (lastKey == VK_RIGHT) {
-					frameCounter++;
-				}
-				else {
-					frameCounter = 1;
-					lastKey = VK_RIGHT;
-				}
-			}
-
-			if (GetKeyState(VK_LEFT) < 0) {
-				if (lastKey == VK_LEFT) {
-					frameCounter++;
-				}
-				else {
-					frameCounter = 1;
-					lastKey = VK_LEFT;
-				}
-			}
-			
 			// frameCounter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
 			if (frameCounter == 4) {
 
-				if (lastKey == VK_RIGHT && (player.playerPosition.x + player.playerXSpeed) <= screen.SCREEN_WIDTH) {
-					player.playerPosition.x += player.playerXSpeed;
-					cameraPosition.x += player.playerXSpeed;
-				}
-
-				if (lastKey == VK_LEFT && (player.playerPosition.x - player.playerXSpeed) >= 0) {
-					player.playerPosition.x -= player.playerXSpeed;
-					cameraPosition.x -= player.playerXSpeed;
-				}
-
-				if (lastKey == VK_UP && (player.playerPosition.y - player.playerYSpeed) >= 0) {
-					player.playerPosition.y -= player.playerYSpeed;
-				}
-
-				// Check player collision with the ground, if so we stop him
-				if (lastKey == VK_DOWN && (player.playerPosition.y + player.playerYSpeed + playerHeight) <= screen.SCREEN_HEIGHT) {
-					player.playerPosition.y += player.playerYSpeed;
+				if (lastKey == VK_SPACE && (player.playerPosition.y - player.playerYSpeed) >= 0) {
+					player.playerPosition.y -= player.playerYSpeed * 2;
 				}
 
 				// DEBUG
+				/*
 				OutputDebugStringA(to_string(player.playerPosition.x).c_str());
 				OutputDebugStringA("\n");
+				*/
 				// ENDOF DEBUG
 
 				frameCounter = 0;
 			}
 
+			if (gameCounter % 6 == 0) {
+				player.playerPosition.y += player.playerYSpeed / 2;
+			}
+
+			//
+			if (player.playerPosition.y <= 0) {
+				player.playerPosition.y = 0;
+			}
+
+			++gameCounter;
 			elapsed = nyt->getElapsedMs(true);
 		}
 	}
