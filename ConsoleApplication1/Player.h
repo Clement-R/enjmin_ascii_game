@@ -10,7 +10,7 @@ class Player : public Entity
 		static const int PLAYER_HEIGHT = 3;
 
 		char playerSprite[PLAYER_HEIGHT][PLAYER_WIDTH];
-		Position playerPosition;
+		Position position;
 		int playerXSpeed = 0;
 		int playerYSpeed = 4;
 		bool isOnFloor = false;

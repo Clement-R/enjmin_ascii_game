@@ -10,12 +10,12 @@ Player::Player(int life)
 	char data[29];
 	ifstream is("player_sprite");
 	
-	int position = 0;
+	int fileCursor = 0;
 	while (!is.eof())
 	{
 		//reading one character from file to array
-		is.get(data[position]);
-		position++;
+		is.get(data[fileCursor]);
+		fileCursor++;
 	}
 
 	int counter = 0;
@@ -31,19 +31,19 @@ Player::Player(int life)
 	}
 
 	this->life = life;
-	this->playerPosition.x = 0;
-	this->playerPosition.y = 0;
+	this->position.x = 0;
+	this->position.y = 0;
 
-	this->playerPosition.x = this->PLAYER_WIDTH;
-	this->playerPosition.y = Screen::SCREEN_HEIGHT/2;
+	this->position.x = this->PLAYER_WIDTH;
+	this->position.y = Screen::SCREEN_HEIGHT/2;
 }
 
 
 Player::Player(int life, int x, int y)
 {
 	this->life = life;
-	this->playerPosition.x = x;
-	this->playerPosition.y = y;
+	this->position.x = x;
+	this->position.y = y;
 }
 
 
