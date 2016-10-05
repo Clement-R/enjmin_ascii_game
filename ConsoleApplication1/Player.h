@@ -12,7 +12,7 @@ class Player : public Entity
 		char playerSprite[PLAYER_HEIGHT][PLAYER_WIDTH];
 		Position playerPosition;
 		int playerXSpeed = 4;
-		int playerYSpeed = 1;
+		int playerYSpeed = 4;
 
 		Player(int life);
 		Player(int life, int x, int y);
