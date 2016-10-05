@@ -7,6 +7,8 @@
 #include <string>
 
 #include "NYTimer.h"
+#include "Player.h"
+#include "Position.h"
 
 #define WIN32_LEAN_AND_MEAN
 #define SCREEN_WIDTH	120
@@ -34,7 +36,7 @@ const int PINK = PURPLE | FOREGROUND_INTENSITY;
 
 using namespace std;
 
-void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[SCREEN_HEIGHT][SCREEN_WIDTH], position cameraPosition) {
+void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[SCREEN_HEIGHT][SCREEN_WIDTH], Position cameraPosition) {
 	for (int i = 0; i < SCREEN_HEIGHT; i++)
 	{
 		for (int j = 0; j < SCREEN_WIDTH; j++)
@@ -62,6 +64,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	SetConsoleWindowInfo(hOutput, TRUE, &rcRegion);
 	
+	// Initialize player
+	Player player = Player(5);
+
 	// Movement variables related
 	int frameCounter = 0;
 	int lastKey = 0x00;
@@ -78,20 +83,19 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	// Players informations
-	const int playerHeight = sizeof(playerSprite) / sizeof(playerSprite[0]);
-	const int playerWidth = sizeof(playerSprite[0]);
+	const int playerHeight = sizeof(player.playerSprite) / sizeof(player.playerSprite[0]);
+	const int playerWidth = sizeof(player.playerSprite[0]);
 	
 	int coordXStart = 0;
 	int coordYStart = 0;
 	
-	position playerPosition;
-	playerPosition.x = coordXStart;
-	playerPosition.y = coordYStart;
+	player.playerPosition.x = coordXStart;
+	player.playerPosition.y = coordYStart;
 
 	// Camera informations
-	position cameraPosition;
-	cameraPosition.x = playerPosition.x;
-	cameraPosition.y = playerPosition.y;
+	Position cameraPosition;
+	cameraPosition.x = player.playerPosition.x;
+	cameraPosition.y = player.playerPosition.y;
 
 	// Game loop
 	double elapsed = 0;
@@ -109,8 +113,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				for (int l = 0; l < playerWidth; l++)
 				{
-					buffer[playerPosition.y + k][playerPosition.x + l].Char.AsciiChar = playerSprite[k][l];
-					buffer[playerPosition.y + k][playerPosition.x + l].Attributes = FOREGROUND_GREEN;
+					buffer[player.playerPosition.y + k][player.playerPosition.x + l].Char.AsciiChar = player.playerSprite[k][l];
+					buffer[player.playerPosition.y + k][player.playerPosition.x + l].Attributes = FOREGROUND_GREEN;
 				}
 			}
 
@@ -161,27 +165,27 @@ int _tmain(int argc, _TCHAR* argv[])
 			// frameCounter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
 			if (frameCounter == 4) {
 
-				if (lastKey == VK_RIGHT && (playerPosition.x + PLAYER_X_SPEED) <= SCREEN_WIDTH) {
-					playerPosition.x += PLAYER_X_SPEED;
+				if (lastKey == VK_RIGHT && (player.playerPosition.x + PLAYER_X_SPEED) <= SCREEN_WIDTH) {
+					player.playerPosition.x += PLAYER_X_SPEED;
 					cameraPosition.x += PLAYER_X_SPEED;
 				}
 
-				if (lastKey == VK_LEFT && (playerPosition.x - PLAYER_X_SPEED) >= 0) {
-					playerPosition.x -= PLAYER_X_SPEED;
+				if (lastKey == VK_LEFT && (player.playerPosition.x - PLAYER_X_SPEED) >= 0) {
+					player.playerPosition.x -= PLAYER_X_SPEED;
 					cameraPosition.x -= PLAYER_X_SPEED;
 				}
 
-				if (lastKey == VK_UP && (playerPosition.y - PLAYER_Y_SPEED) >= 0) {
-					playerPosition.y -= PLAYER_Y_SPEED;
+				if (lastKey == VK_UP && (player.playerPosition.y - PLAYER_Y_SPEED) >= 0) {
+					player.playerPosition.y -= PLAYER_Y_SPEED;
 				}
 
 				// Check player collision with the ground, if so we stop him
-				if (lastKey == VK_DOWN && (playerPosition.y + PLAYER_Y_SPEED + playerHeight) <= SCREEN_HEIGHT) {
-					playerPosition.y += PLAYER_Y_SPEED;
+				if (lastKey == VK_DOWN && (player.playerPosition.y + PLAYER_Y_SPEED + playerHeight) <= SCREEN_HEIGHT) {
+					player.playerPosition.y += PLAYER_Y_SPEED;
 				}
 
 				// DEBUG
-				OutputDebugStringA(to_string(playerPosition.x).c_str());
+				OutputDebugStringA(to_string(player.playerPosition.x).c_str());
 				OutputDebugStringA("\n");
 				// ENDOF DEBUG
 
