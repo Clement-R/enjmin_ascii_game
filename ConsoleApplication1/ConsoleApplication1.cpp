@@ -17,9 +17,6 @@
 
 #define MS_PER_UPDATE    32
 
-#define PLAYER_X_SPEED    4
-#define PLAYER_Y_SPEED    1
-
 /*
 const int CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE;
 const int PURPLE = FOREGROUND_BLUE | FOREGROUND_RED;

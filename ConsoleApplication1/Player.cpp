@@ -9,6 +9,7 @@ Player::Player(int life)
 	this->playerPosition.y = 0;
 }
 
+
 Player::Player(int life, int x, int y)
 {
 	this->life = life;
@@ -25,5 +26,4 @@ void Player::update() {
 }
 
 void Player::move(int x, int y) {
-
 }

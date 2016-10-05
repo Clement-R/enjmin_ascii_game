@@ -5,23 +5,24 @@
 
 class Player : public Entity
 {
-public:
-	const char playerSprite[3][9] = {
-		{ '_', '_', '_', '.', '_', '_', '_', ' ', ' ' },
-		{ ' ', ' ', '(', '_', ']', '=', '=', '=', '*' },
-		{ ' ', ' ', 'o', ' ', '0', ' ', ' ', ' ', ' ' }
-	};
-	
-	Position playerPosition;
+	public:
+		const char playerSprite[3][9] = {
+			{ '_', '_', '_', '.', '_', '_', '_', ' ', ' ' },
+			{ ' ', ' ', '(', '_', ']', '=', '=', '=', '*' },
+			{ ' ', ' ', 'o', ' ', '0', ' ', ' ', ' ', ' ' }
+		};
+		Position playerPosition;
+		int playerXSpeed = 4;
+		int playerYSpeed = 1;
 
-	Player(int life);
-	Player(int life, int x, int y);
-	~Player();
+		Player(int life);
+		Player(int life, int x, int y);
+		~Player();
 
-	void update();
-	void move(int x, int y);
+		void update();
+		void move(int x, int y);
 
-private:
-	int life;
+	private:
+		int life;
 };
 
