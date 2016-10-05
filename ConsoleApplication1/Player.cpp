@@ -39,11 +39,10 @@ Player::Player(int life)
 }
 
 
-Player::Player(int life, int x, int y)
+Player::Player(int life, Position postion)
 {
 	this->life = life;
-	this->position.x = x;
-	this->position.y = y;
+	this->position = position;
 }
 
 

@@ -16,7 +16,7 @@ class Player : public Entity
 		bool isOnFloor = false;
 
 		Player(int life);
-		Player(int life, int x, int y);
+		Player(int life, Position postion);
 		~Player();
 
 		void update();
