@@ -6,11 +6,14 @@
 #include <iostream>
 #include <string>
 
+#include "GameManager.h"
 #include "NYTimer.h"
 #include "Player.h"
 #include "Position.h"
 #include "Screen.h"
 #include "World.h"
+#include "Target.h"
+
 #define WIN32_LEAN_AND_MEAN
 
 #define MAP_WIDTH       480
@@ -36,36 +39,38 @@ using namespace std;
 void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition) {
 	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
 	{
-	for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
-	{
-		buffer[i][j].Char.AsciiChar = map[i][j + cameraPosition.x];
-		buffer[i][j].Attributes = WHITE;
-	}
+		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
+		{
+			buffer[i][j].Char.AsciiChar = map[i][j + cameraPosition.x];
+			buffer[i][j].Attributes = WHITE;
+		}
 	}
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	// Initialize game
+	GameManager gameManager = GameManager();
+	Screen screen = gameManager.getScreenManager();
+	
 	// Initialize a new timer
 	NYTimer* nyt = new NYTimer();
-
-	// Initialize screen
-	Screen screen = Screen();
 
 	// Initialize player
 	Player player = Player(5);
 
 	// Initialize World
 	World world =  World();
+
 	// Movement variables related
 	int frameCounter = 0;
 	int gameCounter = 0;
 	int lastKey = 0x00;
 
 	// Maps
-	char map1[screen.SCREEN_HEIGHT][MAP_WIDTH];
+	char map1[Screen::SCREEN_HEIGHT][MAP_WIDTH];
 	int mapWidthCounter = 0;
-	for (int i = 0; i < screen.SCREEN_HEIGHT; i++)
+	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
@@ -123,7 +128,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				}
 			}
 
-			// frameCounter : 30 means almost 1pixel/s, 15 means 1pixel/0.5s, 8 1pixel/0.25s
+			// frameCounter : 30frames = 1s
 			if (frameCounter == 4) {
 
 				if (lastKey == VK_SPACE && (player.position.y - player.playerYSpeed) >= 0) {
@@ -148,9 +153,15 @@ int _tmain(int argc, _TCHAR* argv[])
 					player.isOnFloor = true;
 			}
 
+			if (gameCounter % 12 == 0 || gameCounter == 0) {
+				gameManager.spawnTarget(15, 0);
+			}
+
 			if (player.position.y <= 0) {
 				player.position.y = 0;
 			}
+
+			gameManager.updateTargets();
 
 			++gameCounter;
 			elapsed = nyt->getElapsedMs(true);
@@ -158,7 +169,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	// wait the player to push SPACEBAR to 
-	while ((GetKeyState(VK_SPACE) == 0)) {
+	while ((GetKeyState(VK_DOWN) == 0)) {
 	}
 
 	return 0;
