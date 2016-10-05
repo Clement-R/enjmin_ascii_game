@@ -15,7 +15,7 @@
 
 #define MAP_WIDTH       480
 
-#define MS_PER_UPDATE    32
+#define MS_PER_UPDATE    30
 
 /*
 const int CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE;
@@ -69,7 +69,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			map1[i][j] = *to_string(abs(j / screen.SCREEN_WIDTH)).c_str();
+			map1[i][j] = ' ';
 		}
 	}
 
@@ -111,7 +111,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			screen.display();
 
-			// Manage keyboard events, if a pkey is pressed we increase the counter and after
+			// Manage keyboard events, if a key is pressed we increase the counter and after
 			// a number of events we move the player accordingly
 			if (GetKeyState(VK_SPACE) < 0) {
 				if (lastKey == VK_SPACE) {
@@ -128,13 +128,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				if (lastKey == VK_SPACE && (player.playerPosition.y - player.playerYSpeed) >= 0) {
 					player.playerPosition.y -= player.playerYSpeed * 2;
-
-				// Check player collision with the ground, if so we stop him
-				if (lastKey == VK_DOWN && (player.playerPosition.y + player.playerYSpeed + playerHeight) <= screen.SCREEN_HEIGHT) {
-					player.playerPosition.y += player.playerYSpeed;
 				}
 
-				
 				// DEBUG
 				/*
 				OutputDebugStringA(to_string(player.playerPosition.x).c_str());
@@ -146,17 +141,15 @@ int _tmain(int argc, _TCHAR* argv[])
 				//lastKey = 0;
 			}
 
-			if (!player.isOnFloor && lastKey != VK_UP){
-				player.playerPosition.y += world.gravity;
-				if ((player.playerPosition.y + playerHeight) >= screen.SCREEN_HEIGHT)
-					player.isOnFloor = true;
-			}
-
 			if (gameCounter % 6 == 0) {
-				player.playerPosition.y += player.playerYSpeed / 2;
+				if (!player.isOnFloor && lastKey != VK_UP) {
+					// player.playerPosition.y += world.gravity;
+					player.playerPosition.y += player.playerYSpeed / 2;
+					if ((player.playerPosition.y + playerHeight) >= screen.SCREEN_HEIGHT)
+						player.isOnFloor = true;
+				}
 			}
 
-			//
 			if (player.playerPosition.y <= 0) {
 				player.playerPosition.y = 0;
 			}
