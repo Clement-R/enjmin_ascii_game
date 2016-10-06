@@ -8,7 +8,7 @@ World::World()
 {
 	//memset(this->map, 0, sizeof(this->map[0][0]) * World::MAP_WIDTH * World::MAP_HEIGHT);
 	char data[10000];
-	ifstream is("map");
+	ifstream is("map_flat");
 	int fileCursor = 0;
 	while (!is.eof())
 	{
