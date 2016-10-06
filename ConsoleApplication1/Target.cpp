@@ -15,6 +15,5 @@ void Target::update() {
 	if (this->frameCounter % 4 == 0) {
 		++this->position.x;
 	}
-
 	this->frameCounter++;
 }

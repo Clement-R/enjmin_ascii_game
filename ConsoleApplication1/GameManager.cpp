@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "GameManager.h"
 
+#include <Windows.h>
+
 
 GameManager::GameManager()
 {
@@ -16,6 +18,7 @@ void GameManager::updateTargets()
 	for(Target target : this->targets)
 	{
 		target.update();
+		this->displayTargets();
 	}
 }
 
@@ -37,6 +40,14 @@ void GameManager::removeTarget(Target target)
 	// TODO
 }
 
-Screen GameManager::getScreenManager() {
-	return this->screen;
+Screen* GameManager::getScreenManager() {
+	return &(this->screen);
+}
+
+void GameManager::displayTargets() {
+	for (Target target : this->targets) {
+		screen.buffer[target.position.y][target.position.x].Char.AsciiChar = '*';
+		screen.buffer[target.position.y][target.position.x].Attributes = FOREGROUND_GREEN | FOREGROUND_RED;
+	}
+	// screen.buffer[player.position.y + k][player.position.x + l].Attributes = FOREGROUND_YELLOW;
 }

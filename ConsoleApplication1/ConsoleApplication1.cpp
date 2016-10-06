@@ -17,7 +17,6 @@
 #define WIN32_LEAN_AND_MEAN
 
 #define MAP_WIDTH       480
-
 #define MS_PER_UPDATE    30
 
 /*
@@ -51,7 +50,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	// Initialize game
 	GameManager gameManager = GameManager();
-	Screen screen = gameManager.getScreenManager();
+	Screen *screen = gameManager.getScreenManager();
 	
 	// Initialize a new timer
 	NYTimer* nyt = new NYTimer();
@@ -94,9 +93,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		// Check if one frame time has passed, we update the game 30FPS
 		if (elapsed > MS_PER_UPDATE) {
-			screen.read();
-
-			drawMap(map1, screen.buffer, cameraPosition);
+			screen->read();
+			
+			drawMap(map1, screen->buffer, cameraPosition);
 
 			// Death condition
 			if ((player.position.y + player.playerYSpeed) > Screen::SCREEN_HEIGHT) {
@@ -109,12 +108,12 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				for (int l = 0; l < playerWidth; l++)
 				{
-					screen.buffer[player.position.y + k][player.position.x + l].Char.AsciiChar = player.playerSprite[k][l];
-					screen.buffer[player.position.y + k][player.position.x + l].Attributes = FOREGROUND_GREEN;
+					// TODO : Get reference of the buffer accros all the application, because
+					// actually there is several buffers
+					screen->buffer[player.position.y + k][player.position.x + l].Char.AsciiChar = player.playerSprite[k][l];
+					screen->buffer[player.position.y + k][player.position.x + l].Attributes = FOREGROUND_GREEN;
 				}
 			}
-
-			screen.display();
 
 			// Manage keyboard events, if a key is pressed we increase the counter and after
 			// a number of events we move the player accordingly
@@ -149,12 +148,16 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (gameCounter % 6 == 0) {
 				// player.playerPosition.y += world.gravity;
 				player.position.y += player.playerYSpeed / 2;
-				if ((player.position.y + playerHeight) >= screen.SCREEN_HEIGHT)
+				if ((player.position.y + playerHeight) >= Screen::SCREEN_HEIGHT)
 					player.isOnFloor = true;
 			}
 
-			if (gameCounter % 12 == 0 || gameCounter == 0) {
+			if (gameCounter % 60 == 0 || gameCounter == 0) {
 				gameManager.spawnTarget(15, 0);
+				// DEBUG
+				OutputDebugStringA("NEW TARGET");
+				OutputDebugStringA("\n");
+				// ENDOF DEBUG
 			}
 
 			if (player.position.y <= 0) {
@@ -163,6 +166,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			gameManager.updateTargets();
 
+			screen->display();
 			++gameCounter;
 			elapsed = nyt->getElapsedMs(true);
 		}

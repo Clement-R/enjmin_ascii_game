@@ -19,7 +19,9 @@ public:
 	void addTarget(Target target);
 	void removeTarget(Target target);
 
-	Screen getScreenManager();
+	Screen* getScreenManager();
+
+	void displayTargets();
 
 private:
 	vector<Target> targets;
