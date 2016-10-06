@@ -6,7 +6,7 @@ class World : public Entity
 public:
 
 	int gravity = 1;
-	static const int MAP_WIDTH = 150;
+	static const int MAP_WIDTH = 200;
 	static const int MAP_HEIGHT = 32;
 	char map[MAP_HEIGHT][MAP_WIDTH];
 	void update();
