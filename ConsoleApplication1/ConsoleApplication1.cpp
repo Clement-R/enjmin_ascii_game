@@ -108,8 +108,6 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				for (int l = 0; l < playerWidth; l++)
 				{
-					// TODO : Get reference of the buffer accros all the application, because
-					// actually there is several buffers
 					screen->buffer[player.position.y + k][player.position.x + l].Char.AsciiChar = player.playerSprite[k][l];
 					screen->buffer[player.position.y + k][player.position.x + l].Attributes = FOREGROUND_GREEN;
 				}
@@ -128,7 +126,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			// frameCounter : 30frames = 1s
-			if (frameCounter == 4) {
+			if (frameCounter == 3) {
 
 				if (lastKey == VK_SPACE && (player.position.y - player.playerYSpeed) >= 0) {
 					player.position.y -= player.playerYSpeed * 2;
@@ -152,12 +150,8 @@ int _tmain(int argc, _TCHAR* argv[])
 					player.isOnFloor = true;
 			}
 
-			if (gameCounter % 60 == 0 || gameCounter == 0) {
+			if (gameCounter % 120 == 0 || gameCounter == 0) {
 				gameManager.spawnTarget(15, 0);
-				// DEBUG
-				OutputDebugStringA("NEW TARGET");
-				OutputDebugStringA("\n");
-				// ENDOF DEBUG
 			}
 
 			if (player.position.y <= 0) {
@@ -172,9 +166,10 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 	}
 
-	// wait the player to push SPACEBAR to 
+	// wait the player to push down arrow key to stop the program
 	while ((GetKeyState(VK_DOWN) == 0)) {
 	}
 
 	return 0;
 }
+
