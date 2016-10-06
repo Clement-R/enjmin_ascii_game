@@ -173,6 +173,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			cameraPosition.x += 1;
+			if (cameraPosition.x > 150)cameraPosition.x = 0;
 			OutputDebugStringA(to_string(cameraPosition.x).c_str());
 			OutputDebugStringA("\n");
 			gameManager.updateTargets();
