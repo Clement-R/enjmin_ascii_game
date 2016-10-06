@@ -67,7 +67,7 @@ void GameManager::displayTargets() {
 			for (int j = 0; j < Target::TARGET_WIDTH; j++)
 			{
 				screen.buffer[target->position.y + i][target->position.x + j].Char.AsciiChar = '*';
-				screen.buffer[target->position.y + i][target->position.x + j].Attributes = FOREGROUND_GREEN | FOREGROUND_RED;
+				screen.buffer[target->position.y + i][target->position.x + j].Attributes = BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
 			}
 		}
 	}

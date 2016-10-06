@@ -16,7 +16,7 @@ void Target::update() {
 	// Move target forward every 4 frames
 	if (this->frameCounter % 4 == 0) {
 		if (this->position.x - 1 > 0) {
-			--this->position.x;
+			this->position.x -= this->speed;
 		} else {
 			this->toDestroy = true;
 		}	
