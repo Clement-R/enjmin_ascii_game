@@ -1,29 +1,34 @@
 #pragma once
 
-#include <vector>
-#include "Target.h"
+#include <list>
+#include "Player.h"
 #include "Position.h"
 #include "Screen.h"
+#include "Target.h"
 
 using namespace std;
 
 class GameManager
 {
 public:
+	static const int minTargetSpawnY = 0;
+	static const int maxTargetSpawnY = 25;
 	GameManager();
 	~GameManager();
 
 	void updateTargets();
+	void checkCollisions();
 
 	void spawnTarget(int x, int y);
-	void addTarget(Target target);
-	void removeTarget(Target target);
-
+	void addTarget(Target * target);
+	
 	Screen* getScreenManager();
+	Player* getPlayer();
 
 	void displayTargets();
 
 private:
-	vector<Target> targets;
+	list<Target*> targets;
 	Screen screen;
+	Player player;
 };
