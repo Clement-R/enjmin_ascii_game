@@ -10,6 +10,8 @@ using namespace std;
 class GameManager
 {
 public:
+	static const int minTargetSpawnY = 0;
+	static const int maxTargetSpawnY = 25;
 	GameManager();
 	~GameManager();
 

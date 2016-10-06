@@ -56,8 +56,14 @@ Screen* GameManager::getScreenManager() {
 void GameManager::displayTargets() {
 	for (Target *target : this->targets) {
 		// Todo : create target sprite and display it here
-		screen.buffer[target->position.y][target->position.x].Char.AsciiChar = '*';
-		screen.buffer[target->position.y][target->position.x].Attributes = FOREGROUND_GREEN | FOREGROUND_RED;
+		for (int i = 0; i < Target::TARGET_HEIGHT; i++)
+		{
+			for (int j = 0; j < Target::TARGET_WIDTH; j++)
+			{
+				screen.buffer[target->position.y + i][target->position.x + j].Char.AsciiChar = '*';
+				screen.buffer[target->position.y + i][target->position.x + j].Attributes = FOREGROUND_GREEN | FOREGROUND_RED;
+			}
+		}
 	}
 }
 
