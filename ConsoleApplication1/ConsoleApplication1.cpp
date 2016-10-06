@@ -171,6 +171,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				player->position.y = 0;
 			}
+
 			cameraPosition.x += 1;
 			OutputDebugStringA(to_string(cameraPosition.x).c_str());
 			OutputDebugStringA("\n");
