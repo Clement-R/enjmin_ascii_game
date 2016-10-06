@@ -53,13 +53,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Initialize game
 	GameManager gameManager = GameManager();
 	Screen *screen = gameManager.getScreenManager();
+	Player *player = gameManager.getPlayer(); 
 	
 	// Initialize a new timer
 	NYTimer* nyt = new NYTimer();
 
 	// Initialize player
-	Player player = Player(5);
-
+	
 	// Initialize World
 	World world =  World();
 
@@ -85,8 +85,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// Camera informations
 	Position cameraPosition;
-	cameraPosition.x = player.position.x;
-	cameraPosition.y = player.position.y;
+	cameraPosition.x = player->position.x;
+	cameraPosition.y = player->position.y;
 
 	// Game loop
 	double elapsed = 0;
@@ -100,7 +100,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			drawMap(map1, screen->buffer, cameraPosition);
 
 			// Death condition
-			if ((player.position.y + player.playerYSpeed) > Screen::SCREEN_HEIGHT) {
+			if ((player->position.y + player->playerYSpeed) > Screen::SCREEN_HEIGHT) {
 				// Stop the game
 				break;
 			}
@@ -110,8 +110,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				for (int l = 0; l < Player::PLAYER_WIDTH; l++)
 				{
-					screen->buffer[player.position.y + k][player.position.x + l].Char.AsciiChar = player.playerSprite[k][l];
-					screen->buffer[player.position.y + k][player.position.x + l].Attributes = FOREGROUND_GREEN;
+					screen->buffer[player->position.y + k][player->position.x + l].Char.AsciiChar = player->playerSprite[k][l];
+					screen->buffer[player->position.y + k][player->position.x + l].Attributes = FOREGROUND_GREEN;
 				}
 			}
 
@@ -130,8 +130,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			// frameCounter : 30frames = 1s
 			if (frameCounter == 3) {
 
-				if (lastKey == VK_SPACE && (player.position.y - player.playerYSpeed) >= 0) {
-					player.position.y -= player.playerYSpeed * 2;
+				if (lastKey == VK_SPACE && (player->position.y - player->playerYSpeed) >= 0) {
+					player->position.y -= player->playerYSpeed * 2;
 				}
 
 				// DEBUG
@@ -147,9 +147,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			if (gameCounter % 6 == 0) {
 				// player.playerPosition.y += world.gravity;
-				player.position.y += player.playerYSpeed / 2;
-				if ((player.position.y + Player::PLAYER_HEIGHT) >= Screen::SCREEN_HEIGHT)
-					player.isOnFloor = true;
+				player->position.y += player->playerYSpeed / 2;
+				if ((player->position.y + Player::PLAYER_HEIGHT) >= Screen::SCREEN_HEIGHT)
+					player->isOnFloor = true;
 			}
 
 			if (gameCounter % 120 == 0 || gameCounter == 0) {
@@ -160,8 +160,8 @@ int _tmain(int argc, _TCHAR* argv[])
 				gameManager.spawnTarget(70, randomPosition);
 			}
 
-			if (player.position.y <= 0) {
-				player.position.y = 0;
+			if (player->position.y <= 0) {
+				player->position.y = 0;
 			}
 
 			gameManager.updateTargets();

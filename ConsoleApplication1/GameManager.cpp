@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "GameManager.h"
-
 #include <Windows.h>
 #include <algorithm>
 #include <string>
+
+#include "GameManager.h"
 
 using namespace std;
 
@@ -51,6 +51,11 @@ void GameManager::addTarget(Target *target)
 
 Screen* GameManager::getScreenManager() {
 	return &(this->screen);
+}
+
+Player * GameManager::getPlayer()
+{
+	return new Player(5);
 }
 
 void GameManager::displayTargets() {
