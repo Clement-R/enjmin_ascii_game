@@ -37,8 +37,23 @@ void World::draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH]
 	{
 		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
 		{
-			buffer[i][j].Char.AsciiChar = this->map[i][j + cameraPosition.x];
-			buffer[i][j].Attributes = WHITE;
+			char tile = this->map[i][j + cameraPosition.x];
+			buffer[i][j].Char.AsciiChar = tile;
+			
+			switch (tile)
+			{
+				case ' ' :
+					buffer[i][j].Attributes = FOREGROUND_BLUE | BACKGROUND_BLUE | BACKGROUND_INTENSITY;
+					break;
+
+				case 'w':
+					buffer[i][j].Attributes = WHITE | BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN;
+					break;
+
+				default:
+					buffer[i][j].Attributes = WHITE;
+					break;
+			}
 		}
 	}
 }
