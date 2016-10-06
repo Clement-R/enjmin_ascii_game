@@ -20,20 +20,6 @@
 #define MAP_WIDTH       480
 
 
-/*
-const int CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE;
-const int PURPLE = FOREGROUND_BLUE | FOREGROUND_RED;
-const int YELLOW = FOREGROUND_GREEN | FOREGROUND_RED;
-const int WHITE = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
-const int PINK = PURPLE | FOREGROUND_INTENSITY;
-*/
-
-#define CYAN     FOREGROUND_GREEN | FOREGROUND_BLUE
-#define PURPLE   FOREGROUND_BLUE | FOREGROUND_RED
-#define YELLOW   FOREGROUND_GREEN | FOREGROUND_RED
-#define WHITE    FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED
-#define PINK     PURPLE | FOREGROUND_INTENSITY
-
 using namespace std;
 
 void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition) {
@@ -42,7 +28,7 @@ void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][S
 		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
 		{
 			buffer[i][j].Char.AsciiChar = map[i][j + cameraPosition.x];
-			buffer[i][j].Attributes = WHITE;
+			buffer[i][j].Attributes = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
 		}
 	}
 }
@@ -50,6 +36,13 @@ void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][S
 int _tmain(int argc, _TCHAR* argv[])
 {
 	const int MS_PER_UPDATE = 30;
+	
+	const int CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE;
+	const int PURPLE = FOREGROUND_BLUE | FOREGROUND_RED;
+	const int YELLOW = FOREGROUND_GREEN | FOREGROUND_RED;
+	const int WHITE = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
+	const int PINK = PURPLE | FOREGROUND_INTENSITY;
+
 	// Initialize game
 	GameManager gameManager = GameManager();
 	Screen *screen = gameManager.getScreenManager();
