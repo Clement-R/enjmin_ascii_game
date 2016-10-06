@@ -39,7 +39,6 @@ void World::draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH]
 	{
 		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
 		{
-
 			char tile = this->map[i][j + cameraPosition.x];
 			buffer[i][j].Char.AsciiChar = tile;
 			
