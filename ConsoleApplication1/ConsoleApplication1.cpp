@@ -1,23 +1,24 @@
 // ConsoleApplication1.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-#include <windows.h>
 #include <iostream>
+#include "stdafx.h"
 #include <string>
+#include <time.h>
+#include <windows.h>
 
 #include "GameManager.h"
 #include "NYTimer.h"
 #include "Player.h"
 #include "Position.h"
 #include "Screen.h"
-#include "World.h"
 #include "Target.h"
+#include "World.h"
 
 #define WIN32_LEAN_AND_MEAN
 
 #define MAP_WIDTH       480
-#define MS_PER_UPDATE    30
+
 
 /*
 const int CYAN = FOREGROUND_GREEN | FOREGROUND_BLUE;
@@ -48,6 +49,7 @@ void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][S
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	const int MS_PER_UPDATE = 30;
 	// Initialize game
 	GameManager gameManager = GameManager();
 	Screen *screen = gameManager.getScreenManager();
@@ -60,6 +62,10 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// Initialize World
 	World world =  World();
+
+	// Initialize random number generator with random seed
+	srand(time(NULL));
+	int randomPosition = 0;
 
 	// Movement variables related
 	int frameCounter = 0;
@@ -147,7 +153,11 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			if (gameCounter % 120 == 0 || gameCounter == 0) {
-				gameManager.spawnTarget(15, 0);
+				// Choose random position
+				randomPosition = rand() % GameManager::maxTargetSpawnY + GameManager::minTargetSpawnY;
+
+				// Spawn the target
+				gameManager.spawnTarget(70, randomPosition);
 			}
 
 			if (player.position.y <= 0) {
