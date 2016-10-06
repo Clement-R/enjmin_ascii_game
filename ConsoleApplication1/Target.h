@@ -9,8 +9,10 @@ class Target : public Entity
 		~Target();
 
 		void update();
+		bool needDestroy();
 
 	private:
-		int frameCounter;
+		int frameCounter = 0;
+		bool toDestroy = false;
 };
 
