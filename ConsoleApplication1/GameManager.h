@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <list>
 #include "Target.h"
 #include "Position.h"
 #include "Screen.h"
@@ -16,14 +16,11 @@ public:
 	void updateTargets();
 
 	void spawnTarget(int x, int y);
-	void addTarget(Target target);
-	void removeTarget(Target target);
-
+	void addTarget(Target * target);
 	Screen* getScreenManager();
-
 	void displayTargets();
 
 private:
-	vector<Target> targets;
+	list<Target*> targets;
 	Screen screen;
 };
