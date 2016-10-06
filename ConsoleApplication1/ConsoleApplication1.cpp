@@ -90,17 +90,20 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// Game loop
 	double elapsed = 0;
-	while (true) {
+	while (true)
+	{
 		elapsed = nyt->getElapsedMs(false);
 
 		// Check if one frame time has passed, we update the game 30FPS
-		if (elapsed > MS_PER_UPDATE) {
+		if (elapsed > MS_PER_UPDATE)
+		{
 			screen->read();
 			
 			drawMap(map1, screen->buffer, cameraPosition);
 
 			// Death condition
-			if ((player->position.y + player->playerYSpeed) > Screen::SCREEN_HEIGHT) {
+			if ((player->position.y + player->playerYSpeed) > Screen::SCREEN_HEIGHT)
+			{
 				// Stop the game
 				break;
 			}
@@ -117,20 +120,25 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			// Manage keyboard events, if a key is pressed we increase the counter and after
 			// a number of events we move the player accordingly
-			if (GetKeyState(VK_SPACE) < 0) {
-				if (lastKey == VK_SPACE) {
+			if (GetKeyState(VK_SPACE) < 0)
+			{
+				if (lastKey == VK_SPACE)
+				{
 					frameCounter++;
 				}
-				else {
+				else
+				{
 					frameCounter = 1;
 					lastKey = VK_SPACE;
 				}
 			}
 
 			// frameCounter : 30frames = 1s
-			if (frameCounter == 3) {
+			if (frameCounter == 3)
+			{
 
-				if (lastKey == VK_SPACE && (player->position.y - player->playerYSpeed) >= 0) {
+				if (lastKey == VK_SPACE && (player->position.y - player->playerYSpeed) >= 0)
+				{
 					player->position.y -= player->playerYSpeed * 2;
 				}
 
@@ -145,14 +153,16 @@ int _tmain(int argc, _TCHAR* argv[])
 				//lastKey = 0;
 			}
 
-			if (gameCounter % 6 == 0) {
+			if (gameCounter % 6 == 0)
+			{
 				// player.playerPosition.y += world.gravity;
 				player->position.y += player->playerYSpeed / 2;
 				if ((player->position.y + Player::PLAYER_HEIGHT) >= Screen::SCREEN_HEIGHT)
 					player->isOnFloor = true;
 			}
 
-			if (gameCounter % 120 == 0 || gameCounter == 0) {
+			if (gameCounter % 120 == 0 || gameCounter == 0)
+			{
 				// Choose random position
 				randomPosition = rand() % GameManager::maxTargetSpawnY + GameManager::minTargetSpawnY;
 
@@ -160,7 +170,8 @@ int _tmain(int argc, _TCHAR* argv[])
 				gameManager.spawnTarget(70, randomPosition);
 			}
 
-			if (player->position.y <= 0) {
+			if (player->position.y <= 0)
+			{
 				player->position.y = 0;
 			}
 
@@ -173,8 +184,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	// wait the player to push down arrow key to stop the program
-	while ((GetKeyState(VK_DOWN) == 0)) {
-	}
+	while ((GetKeyState(VK_DOWN) == 0)) {}
 
 	return 0;
 }
