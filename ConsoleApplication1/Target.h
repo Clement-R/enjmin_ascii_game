@@ -13,6 +13,7 @@ class Target : public Entity
 
 		void update();
 		bool needDestroy();
+		void setToDestroy();
 
 	private:
 		int frameCounter = 0;

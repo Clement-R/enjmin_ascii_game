@@ -17,6 +17,7 @@ public:
 	~GameManager();
 
 	void updateTargets();
+	void checkCollisions();
 
 	void spawnTarget(int x, int y);
 	void addTarget(Target * target);

@@ -169,7 +169,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			gameManager.updateTargets();
-
+			gameManager.checkCollisions();
+			
 			screen->display();
 			++gameCounter;
 			elapsed = nyt->getElapsedMs(true);

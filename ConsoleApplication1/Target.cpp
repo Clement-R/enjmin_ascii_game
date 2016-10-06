@@ -29,3 +29,8 @@ bool Target::needDestroy()
 	return this->toDestroy;
 }
 
+void Target::setToDestroy()
+{
+	this->toDestroy = true;
+}
+

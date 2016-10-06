@@ -73,3 +73,14 @@ void GameManager::displayTargets() {
 	}
 }
 
+void GameManager::checkCollisions() {
+	for (Target *target : this->targets) {
+		// Detect collision
+		if (abs(player.position.x - target->position.x) * 2 < (Player::PLAYER_WIDTH + Target::TARGET_WIDTH)
+			&& abs(player.position.y - target->position.y) * 2 < (Player::PLAYER_HEIGHT + Target::TARGET_HEIGHT))
+		{
+			target->setToDestroy();
+		}
+	}
+}
+
