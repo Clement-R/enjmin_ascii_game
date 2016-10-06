@@ -16,7 +16,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#define MAP_WIDTH       480
+#define MAP_WIDTH       450
 #define MS_PER_UPDATE    30
 
 /*
@@ -67,15 +67,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	int lastKey = 0x00;
 
 	// Maps
-	char map1[Screen::SCREEN_HEIGHT][MAP_WIDTH];
+	//World world = World();
+	/*char map1[Screen::SCREEN_HEIGHT][MAP_WIDTH];
 	int mapWidthCounter = 0;
+	char arr[4] = { '0', '1', '2', '3' };
 	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			map1[i][j] = ' ';
+
+				map1[i][j] = arr[j%4];
 		}
-	}
+	}*/
 
 	// Players informations
 	const int playerHeight = sizeof(player.playerSprite) / sizeof(player.playerSprite[0]);
@@ -95,7 +98,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		if (elapsed > MS_PER_UPDATE) {
 			screen->read();
 			
-			drawMap(map1, screen->buffer, cameraPosition);
+			world.draw(screen->buffer, cameraPosition);
+			//drawMap(map1, screen->buffer, cameraPosition);
 
 			// Death condition
 			if ((player.position.y + player.playerYSpeed) > Screen::SCREEN_HEIGHT) {
@@ -148,6 +152,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (gameCounter % 6 == 0) {
 				// player.playerPosition.y += world.gravity;
 				player.position.y += player.playerYSpeed / 2;
+
 				if ((player.position.y + playerHeight) >= Screen::SCREEN_HEIGHT)
 					player.isOnFloor = true;
 			}
@@ -163,7 +168,9 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (player.position.y <= 0) {
 				player.position.y = 0;
 			}
-
+			cameraPosition.x += 1;
+			OutputDebugStringA(to_string(cameraPosition.x).c_str());
+			OutputDebugStringA("\n");
 			gameManager.updateTargets();
 
 			screen->display();

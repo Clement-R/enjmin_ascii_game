@@ -6,7 +6,7 @@ class Screen
 {
 	public:
 		static const int SCREEN_WIDTH = 90;
-		static const int SCREEN_HEIGHT = 30;
+		static const int SCREEN_HEIGHT = 32;
 
 		HANDLE hOutput;
 		COORD dwBufferSize;
