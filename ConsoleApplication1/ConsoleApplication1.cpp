@@ -77,10 +77,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 	}
 
-	// Players informations
-	const int playerHeight = sizeof(player.playerSprite) / sizeof(player.playerSprite[0]);
-	const int playerWidth = sizeof(player.playerSprite[0]);
-
 	// Camera informations
 	Position cameraPosition;
 	cameraPosition.x = player.position.x;
@@ -104,9 +100,9 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			// Draw player
-			for (int k = 0; k < playerHeight; k++)
+			for (int k = 0; k < Player::PLAYER_HEIGHT; k++)
 			{
-				for (int l = 0; l < playerWidth; l++)
+				for (int l = 0; l < Player::PLAYER_WIDTH; l++)
 				{
 					screen->buffer[player.position.y + k][player.position.x + l].Char.AsciiChar = player.playerSprite[k][l];
 					screen->buffer[player.position.y + k][player.position.x + l].Attributes = FOREGROUND_GREEN;
@@ -146,7 +142,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (gameCounter % 6 == 0) {
 				// player.playerPosition.y += world.gravity;
 				player.position.y += player.playerYSpeed / 2;
-				if ((player.position.y + playerHeight) >= Screen::SCREEN_HEIGHT)
+				if ((player.position.y + Player::PLAYER_HEIGHT) >= Screen::SCREEN_HEIGHT)
 					player.isOnFloor = true;
 			}
 
