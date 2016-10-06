@@ -10,6 +10,7 @@ using namespace std;
 GameManager::GameManager()
 {
 	this->screen = Screen();
+	this->player = Player(5);
 }
 
 GameManager::~GameManager()
@@ -55,7 +56,7 @@ Screen* GameManager::getScreenManager() {
 
 Player * GameManager::getPlayer()
 {
-	return new Player(5);
+	return &(this->player);
 }
 
 void GameManager::displayTargets() {

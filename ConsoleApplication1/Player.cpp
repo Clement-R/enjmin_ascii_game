@@ -5,6 +5,8 @@
 
 using namespace std;
 
+Player::Player() {}
+
 Player::Player(int life)
 {
 	char data[29];
