@@ -5,6 +5,9 @@
 class Target : public Entity
 {
 	public:
+		static const int TARGET_WIDTH = 2;
+		static const int TARGET_HEIGHT = 4;
+
 		Target(Position position);
 		~Target();
 
