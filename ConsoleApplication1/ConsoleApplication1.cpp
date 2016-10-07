@@ -155,19 +155,25 @@ int _tmain(int argc, _TCHAR* argv[])
 				player->position.y = 0;
 			}
 
+			/*
 			cameraPosition.x += 1;
 			if (cameraPosition.x + Screen::SCREEN_WIDTH > 150)
 			{
 				world.changeCurrentMap();
 				cameraPosition.x = 0;
 			}
+			*/
+
+			cameraPosition.x += 1;
+			world.update();
+
 			OutputDebugStringA(to_string(cameraPosition.x).c_str());
 			OutputDebugStringA("\n");
 			gameManager.updateTargets();
 			gameManager.checkCollisions();
 			
 			screen->display();
-			++gameCounter;
+ 			++gameCounter;
 			elapsed = nyt->getElapsedMs(true);
 		}
 	}
