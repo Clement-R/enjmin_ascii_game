@@ -8,7 +8,7 @@ class Target : public Entity
 		static const int TARGET_WIDTH = 2;
 		static const int TARGET_HEIGHT = 4;
 
-		int speed = 2;
+		int speed = 4;
 
 		Target(Position position);
 		~Target();
