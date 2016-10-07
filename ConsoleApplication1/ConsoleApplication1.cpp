@@ -46,8 +46,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Initialize game
 	GameManager gameManager = GameManager();
 	Screen *screen = gameManager.getScreenManager();
-	Player *player = gameManager.getPlayer(); 
-	
+	Player *player = gameManager.getPlayer();
 	// Initialize a new timer
 	NYTimer* nyt = new NYTimer();
 
@@ -147,7 +146,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				randomPosition = rand() % GameManager::maxTargetSpawnY + GameManager::minTargetSpawnY;
 
 				// Spawn the target
-				gameManager.spawnTarget(70, randomPosition);
+				gameManager.spawnTarget(90, randomPosition);
 			}
 
 			if (player->position.y <= 0)
@@ -166,7 +165,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			cameraPosition.x += 1;
 			world.update();
-
+			player->update();
 			OutputDebugStringA(to_string(cameraPosition.x).c_str());
 			OutputDebugStringA("\n");
 			gameManager.updateTargets();

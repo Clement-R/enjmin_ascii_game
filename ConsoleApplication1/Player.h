@@ -10,11 +10,13 @@ class Player : public Entity
 		static const int PLAYER_HEIGHT = 3;
 
 		char playerSprite[PLAYER_HEIGHT][PLAYER_WIDTH];
+		char playerAnimation[8][9];
+		int frameCounter = 0;
 		Position position;
 		int playerXSpeed = 4;
 		int playerYSpeed = 4;
 		bool isOnFloor = false;
-
+		int currentFrame = 0;
 		Player();
 		Player(int life);
 		Player(int life, Position postion);
@@ -22,7 +24,7 @@ class Player : public Entity
 
 		void update();
 		void move(int x, int y);
-
+		void loadAnimation();
 	private:
 		int life;
 };
