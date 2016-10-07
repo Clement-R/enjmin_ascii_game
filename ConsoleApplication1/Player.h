@@ -6,6 +6,7 @@
 class Player : public Entity
 {
 	public:
+		int score = 0;
 		static const int PLAYER_WIDTH= 9;
 		static const int PLAYER_HEIGHT = 3;
 

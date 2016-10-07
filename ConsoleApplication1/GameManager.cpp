@@ -84,3 +84,11 @@ void GameManager::checkCollisions() {
 	}
 }
 
+void GameManager::increaseDifficulty(int lastFrame) {
+	// 30 FPS
+	if (lastFrame % 180 == 0) {
+		if (this->difficulty - 10 >= 10) {
+			this->difficulty -= 10;
+		}
+	}
+}
