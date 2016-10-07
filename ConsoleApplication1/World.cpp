@@ -26,7 +26,7 @@ World::World()
 			if (data[counter] != '\n') {
 				char tile = (data[counter] == '0') ? ' ' : data[counter];
 				this->map[i][j] = tile;
-				this->map2[i][j] = tile;
+				this->previousMap[i][j] = tile;
 			}
 			counter++;
 		}
@@ -35,27 +35,41 @@ World::World()
 }
 
 void World::draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition){
-	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
+	
+	for (int k = 0; k < Screen::SCREEN_HEIGHT; k++)
 	{
-		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
+		for (int l = 0; l < Screen::SCREEN_WIDTH; l++)
 		{
-			char tile = this->map[i][j + cameraPosition.x];
-			buffer[i][j].Char.AsciiChar = tile;
-			
+
+			char tile = ' ';
+			if (l < Screen::SCREEN_WIDTH - 1) {
+				// Copy previous frame
+				tile = this->previousMap[k][l + 1];
+			}
+			else
+			{
+				// Add new column
+				tile = this->map[k][this->mapIndex];
+			}
+
+			this->previousMap[k][l] = tile;
+			buffer[k][l].Char.AsciiChar = tile;
+
 			switch (tile)
 			{
-				case ' ' :
-					buffer[i][j].Attributes = FOREGROUND_BLUE | BACKGROUND_BLUE | BACKGROUND_INTENSITY;
-					break;
+			case ' ':
+				buffer[k][l].Attributes = FOREGROUND_BLUE | BACKGROUND_BLUE | BACKGROUND_INTENSITY;
+				break;
 
-				case 'w':
-					buffer[i][j].Attributes = WHITE | BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN;
-					break;
+			case 'w':
+				buffer[k][l].Attributes = WHITE | BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN;
+				break;
 
-				default:
-					buffer[i][j].Attributes = WHITE;
-					break;
+			default:
+				buffer[k][l].Attributes = WHITE;
+				break;
 			}
+
 		}
 	}
 }
@@ -63,14 +77,12 @@ World::~World()
 {
 
 }
-void World::changeCurrentMap(){
-	if (this->currentMap == this->map){
-		this->currentMap = this->map2;
-	}
-	else {
-		this->currentMap = this->map;
-	}
-}
 
 void World::update() {
+	if (this->mapIndex + 1 < World::MAP_WIDTH - 1) {
+		++this->mapIndex;
+	}
+	else {
+		this->mapIndex = 0;
+	}
 }
