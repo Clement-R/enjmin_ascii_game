@@ -26,10 +26,12 @@ World::World()
 			if (data[counter] != '\n') {
 				char tile = (data[counter] == '0') ? ' ' : data[counter];
 				this->map[i][j] = tile;
+				this->map2[i][j] = tile;
 			}
 			counter++;
 		}
 	}
+	this->currentMap = this->map;
 }
 
 void World::draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition){
@@ -60,6 +62,14 @@ void World::draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH]
 World::~World()
 {
 
+}
+void World::changeCurrentMap(){
+	if (this->currentMap == this->map){
+		this->currentMap = this->map2;
+	}
+	else {
+		this->currentMap = this->map;
+	}
 }
 
 void World::update() {

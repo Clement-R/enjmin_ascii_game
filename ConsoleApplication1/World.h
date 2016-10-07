@@ -9,9 +9,12 @@ public:
 	static const int MAP_WIDTH = 200;
 	static const int MAP_HEIGHT = 32;
 	char map[MAP_HEIGHT][MAP_WIDTH];
+	char map2[MAP_HEIGHT][MAP_WIDTH];
+	char (*currentMap)[MAP_WIDTH];
 	void update();
 	void draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition);
 	World();
 	~World();
+	void changeCurrentMap();
 };
 
