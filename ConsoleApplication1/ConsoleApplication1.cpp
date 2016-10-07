@@ -63,11 +63,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	int gameCounter = 0;
 	int lastKey = 0x00;
 
-	// Camera informations
-	Position cameraPosition;
-	cameraPosition.x = player->position.x;
-	cameraPosition.y = player->position.y;
-
 	// Game loop
 	double elapsed = 0;
 	while (true)
@@ -79,7 +74,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		{
 			screen->read();
 			
-			world.draw(screen->buffer, cameraPosition);
+			world.draw(screen->buffer);
 
 			// Death condition
 			if ((player->position.y + player->playerYSpeed) > Screen::SCREEN_HEIGHT)
@@ -94,7 +89,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				for (int l = 0; l < Player::PLAYER_WIDTH; l++)
 				{
 					screen->buffer[player->position.y + k][player->position.x + l].Char.AsciiChar = player->playerSprite[k][l];
-					screen->buffer[player->position.y + k][player->position.x + l].Attributes = FOREGROUND_GREEN;
+					screen->buffer[player->position.y + k][player->position.x + l].Attributes = WHITE | screen->buffer[player->position.y + k][player->position.x + l].Attributes;
 				}
 			}
 
@@ -113,7 +108,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				}
 			}
 
-			// frameCounter : 30frames = 1s
+			// frameCounter : 30FPS
 			if (frameCounter == 3)
 			{
 
@@ -122,59 +117,47 @@ int _tmain(int argc, _TCHAR* argv[])
 					player->position.y -= player->playerYSpeed * 2;
 				}
 
-				// DEBUG
-				/*
-				OutputDebugStringA(to_string(player.playerPosition.x).c_str());
-				OutputDebugStringA("\n");
-				*/
-				// ENDOF DEBUG
-
 				frameCounter = 0;
-				//lastKey = 0;
 			}
 
 			if (gameCounter % 6 == 0)
 			{
-				// player.playerPosition.y += world.gravity;
 				player->position.y += player->playerYSpeed / 2;
 				if ((player->position.y + Player::PLAYER_HEIGHT) >= Screen::SCREEN_HEIGHT)
 					player->isOnFloor = true;
 			}
 
-			if (gameCounter % 120 == 0 || gameCounter == 0)
+			if (gameCounter % gameManager.difficulty == 0 || gameCounter == 0)
 			{
 				// Choose random position
 				randomPosition = rand() % GameManager::maxTargetSpawnY + GameManager::minTargetSpawnY;
 
 				// Spawn the target
-				gameManager.spawnTarget(70, randomPosition);
+				gameManager.spawnTarget(Screen::SCREEN_WIDTH - 1, randomPosition);
 			}
+
+			gameManager.increaseDifficulty(gameCounter);
 
 			if (player->position.y <= 0)
 			{
 				player->position.y = 0;
 			}
 
-			/*
-			cameraPosition.x += 1;
-			if (cameraPosition.x + Screen::SCREEN_WIDTH > 150)
-			{
-				world.changeCurrentMap();
-				cameraPosition.x = 0;
-			}
-			*/
-
-			cameraPosition.x += 1;
 			world.update();
 
-			OutputDebugStringA(to_string(cameraPosition.x).c_str());
-			OutputDebugStringA("\n");
 			gameManager.updateTargets();
 			gameManager.checkCollisions();
 			
 			screen->display();
  			++gameCounter;
 			elapsed = nyt->getElapsedMs(true);
+
+			// DEBUG
+			/*
+			OutputDebugStringA(to_string(player.playerPosition.x).c_str());
+			OutputDebugStringA("\n");
+			*/
+			// ENDOF DEBUG
 		}
 	}
 
