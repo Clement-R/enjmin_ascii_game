@@ -51,8 +51,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	// Initialize a new timer
 	NYTimer* nyt = new NYTimer();
 
-	// Initialize player
-	
 	// Initialize World
 	World world =  World();
 
@@ -64,20 +62,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	int frameCounter = 0;
 	int gameCounter = 0;
 	int lastKey = 0x00;
-
-	// Maps
-	//World world = World();
-	/*char map1[Screen::SCREEN_HEIGHT][MAP_WIDTH];
-	int mapWidthCounter = 0;
-	char arr[4] = { '0', '1', '2', '3' };
-	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
-	{
-		for (int j = 0; j < MAP_WIDTH; j++)
-		{
-
-				map1[i][j] = arr[j%4];
-		}
-	}*/
 
 	// Camera informations
 	Position cameraPosition;
@@ -96,7 +80,6 @@ int _tmain(int argc, _TCHAR* argv[])
 			screen->read();
 			
 			world.draw(screen->buffer, cameraPosition);
-			//drawMap(map1, screen->buffer, cameraPosition);
 
 			// Death condition
 			if ((player->position.y + player->playerYSpeed) > Screen::SCREEN_HEIGHT)
