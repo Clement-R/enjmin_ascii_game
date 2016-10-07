@@ -16,7 +16,7 @@ public:
 
 	char (*currentMap)[MAP_WIDTH];
 	void update();
-	void draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition);
+	void draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH]);
 	World();
 	~World();
 };

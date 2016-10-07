@@ -6,7 +6,6 @@
 using namespace std;
 World::World()
 {
-	//memset(this->map, 0, sizeof(this->map[0][0]) * World::MAP_WIDTH * World::MAP_HEIGHT);
 	char data[10000];
 	ifstream is("map_flat");
 	int fileCursor = 0;
@@ -18,7 +17,6 @@ World::World()
 	}
 
 	int counter = 0;
-	//this->map1[Screen::SCREEN_HEIGHT][World::MAP_WIDTH];
 	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
 	{
 		for (int j = 0; j < World::MAP_WIDTH; j++)
@@ -34,7 +32,7 @@ World::World()
 	this->currentMap = this->map;
 }
 
-void World::draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition){
+void World::draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH]){
 	
 	for (int k = 0; k < Screen::SCREEN_HEIGHT; k++)
 	{
