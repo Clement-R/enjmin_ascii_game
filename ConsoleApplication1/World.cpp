@@ -71,16 +71,17 @@ void World::draw(CHAR_INFO(&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH]
 		}
 	}
 }
-World::~World()
+
+World::~World() {}
+
+void World::update()
 {
-
-}
-
-void World::update() {
-	if (this->mapIndex + 1 < World::MAP_WIDTH - 1) {
+	if (this->mapIndex + 1 < World::MAP_WIDTH - 1)
+	{
 		++this->mapIndex;
 	}
-	else {
+	else
+	{
 		this->mapIndex = 0;
 	}
 }

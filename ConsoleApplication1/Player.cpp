@@ -41,7 +41,6 @@ Player::Player(int life)
 	loadAnimation();
 }
 
-
 Player::Player(int life, Position position)
 {
 	this->life = life;
@@ -52,6 +51,7 @@ Player::Player(int life, Position position)
 Player::~Player()
 {
 }
+
 void Player::loadAnimation(){
 	char data[81];
 	ifstream is("player_animation");
@@ -74,8 +74,10 @@ void Player::loadAnimation(){
 		}
 	}
 }
-void Player::update() {
-	if (frameCounter > 3){
+void Player::update()
+{
+	if (frameCounter > 3)
+	{
 		for (int i = 0; i < 10; i++)
 		{
 			playerSprite[0][i] = this->playerAnimation[currentFrame][i];
@@ -85,11 +87,13 @@ void Player::update() {
 			currentFrame = 0;
 		frameCounter = 0;
 	}
-	else {
+	else
+	{
 		frameCounter++;
 	}
 	
 }
 
-void Player::move(int x, int y) {
+void Player::move(int x, int y)
+{
 }

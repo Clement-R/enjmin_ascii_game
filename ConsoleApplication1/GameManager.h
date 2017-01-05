@@ -16,6 +16,7 @@ public:
 	int difficulty = 120;
 
 	GameManager();
+	void initialize();
 	~GameManager();
 
 	void updateTargets();
@@ -31,8 +32,11 @@ public:
 
 	void displayTargets();
 
+	int getScore();
+
 private:
 	list<Target*> targets;
 	Screen screen;
 	Player player;
+	int score;
 };

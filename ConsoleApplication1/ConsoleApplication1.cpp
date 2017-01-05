@@ -22,7 +22,8 @@
 
 using namespace std;
 
-void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition) {
+void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][Screen::SCREEN_WIDTH], Position cameraPosition)
+{
 	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
 	{
 		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
@@ -51,7 +52,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	NYTimer* nyt = new NYTimer();
 
 	// Initialize World
-	World world =  World();
+	World world = World();
 
 	// Initialize random number generator with random seed
 	srand(time(NULL));
@@ -62,107 +63,163 @@ int _tmain(int argc, _TCHAR* argv[])
 	int gameCounter = 0;
 	int lastKey = 0x00;
 
-	// Game loop
+	
 	double elapsed = 0;
+	bool isGameInitialized = true;
+
+	// Game loop
 	while (true)
 	{
-		elapsed = nyt->getElapsedMs(false);
-
-		// Check if one frame time has passed, we update the game 30FPS
-		if (elapsed > MS_PER_UPDATE)
+		if (!isGameInitialized)
 		{
-			screen->read();
-			
-			world.draw(screen->buffer);
+			// Initialize game
+			gameManager.initialize();
+			screen = gameManager.getScreenManager();
+			player = gameManager.getPlayer();
+			// Initialize a new timer
+			nyt = new NYTimer();
 
-			// Death condition
-			if ((player->position.y + player->playerYSpeed) > Screen::SCREEN_HEIGHT)
-			{
-				// Stop the game
-				break;
-			}
+			// Initialize World
+			world = World();
 
-			// Draw player
-			for (int k = 0; k < Player::PLAYER_HEIGHT; k++)
+			// Initialize random number generator with random seed
+			srand(time(NULL));
+			randomPosition = 0;
+
+			// Movement variables related
+			frameCounter = 0;
+			gameCounter = 0;
+			lastKey = 0x00;
+
+			elapsed = 0;
+
+			isGameInitialized = true;
+		}
+		else
+		{
+			elapsed = nyt->getElapsedMs(false);
+
+			// Check if one frame time has passed, we update the game 30FPS
+			if (elapsed > MS_PER_UPDATE)
 			{
-				for (int l = 0; l < Player::PLAYER_WIDTH; l++)
+				screen->read();
+
+				world.draw(screen->buffer);
+
+				// Death condition
+				if ((player->position.y + player->playerYSpeed) > Screen::SCREEN_HEIGHT)
 				{
-					screen->buffer[player->position.y + k][player->position.x + l].Char.AsciiChar = player->playerSprite[k][l];
-					screen->buffer[player->position.y + k][player->position.x + l].Attributes = WHITE | screen->buffer[player->position.y + k][player->position.x + l].Attributes;
-				}
-			}
+					OutputDebugStringA(to_string(GetKeyState(0x52)).c_str());
+					OutputDebugStringA("\n");
 
-			// Manage keyboard events, if a key is pressed we increase the counter and after
-			// a number of events we move the player accordingly
-			if (GetKeyState(VK_SPACE) < 0)
-			{
-				if (lastKey == VK_SPACE)
+					// Prepare for restart
+					isGameInitialized = false;
+					// Wait the player to push R key to stop the program
+					// 0x52 = R key
+					bool exit = false;
+
+					string text = "Restart [R]";
+					int x = 35;
+					int y = 15;
+					for (size_t i = 0; i < text.length(); i++)
+					{
+						screen->buffer[y][x].Char.AsciiChar = (char) text[i];
+						screen->buffer[y][x].Attributes = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
+						x++;
+					}
+
+					screen->display();
+
+					while (!exit)
+					{
+						if(GetKeyState(0x52) < 0)
+						{
+							exit = true;
+						}
+					}
+				}
+
+				// Draw player
+				for (int k = 0; k < Player::PLAYER_HEIGHT; k++)
 				{
-					frameCounter++;
+					for (int l = 0; l < Player::PLAYER_WIDTH; l++)
+					{
+						screen->buffer[player->position.y + k][player->position.x + l].Char.AsciiChar = player->playerSprite[k][l];
+						screen->buffer[player->position.y + k][player->position.x + l].Attributes = WHITE | screen->buffer[player->position.y + k][player->position.x + l].Attributes;
+					}
 				}
-				else
+
+				// Manage keyboard events, if a key is pressed we increase the counter and after
+				// a number of events we move the player accordingly
+				if (GetKeyState(VK_SPACE) < 0)
 				{
-					frameCounter = 1;
-					lastKey = VK_SPACE;
+					if (lastKey == VK_SPACE)
+					{
+						frameCounter++;
+					}
+					else
+					{
+						frameCounter = 1;
+						lastKey = VK_SPACE;
+					}
 				}
-			}
 
-			// frameCounter : 30FPS
-			if (frameCounter == 3)
-			{
-
-				if (lastKey == VK_SPACE && (player->position.y - player->playerYSpeed) >= 0)
+				// frameCounter : 30FPS
+				if (frameCounter == 3)
 				{
-					player->position.y -= player->playerYSpeed * 2;
+
+					if (lastKey == VK_SPACE && (player->position.y - player->playerYSpeed) >= 0)
+					{
+						player->position.y -= player->playerYSpeed * 2;
+					}
+
+					frameCounter = 0;
 				}
 
-				frameCounter = 0;
+				if (gameCounter % 6 == 0)
+				{
+					player->position.y += player->playerYSpeed / 2;
+					if ((player->position.y + Player::PLAYER_HEIGHT) >= Screen::SCREEN_HEIGHT)
+						player->isOnFloor = true;
+				}
+
+				if (gameCounter % gameManager.difficulty == 0 || gameCounter == 0)
+				{
+					// Choose random position
+					randomPosition = rand() % GameManager::maxTargetSpawnY + GameManager::minTargetSpawnY;
+
+					// Spawn the target
+					gameManager.spawnTarget(Screen::SCREEN_WIDTH - 1, randomPosition);
+				}
+
+				gameManager.increaseDifficulty(gameCounter);
+
+				if (player->position.y <= 0)
+				{
+					player->position.y = 0;
+				}
+
+				screen->displayScore(gameManager.getScore());
+
+				world.update();
+				player->update();
+				gameManager.updateTargets();
+				gameManager.checkCollisions();
+
+				screen->display();
+				++gameCounter;
+				elapsed = nyt->getElapsedMs(true);
+
+				// DEBUG
+				/*
+				OutputDebugStringA(to_string(player.playerPosition.x).c_str());
+				OutputDebugStringA("\n");
+				*/
+				// ENDOF DEBUG
 			}
 
-			if (gameCounter % 6 == 0)
-			{
-				player->position.y += player->playerYSpeed / 2;
-				if ((player->position.y + Player::PLAYER_HEIGHT) >= Screen::SCREEN_HEIGHT)
-					player->isOnFloor = true;
-			}
-
-			if (gameCounter % gameManager.difficulty == 0 || gameCounter == 0)
-			{
-				// Choose random position
-				randomPosition = rand() % GameManager::maxTargetSpawnY + GameManager::minTargetSpawnY;
-
-				// Spawn the target
-				gameManager.spawnTarget(Screen::SCREEN_WIDTH - 1, randomPosition);
-			}
-
-			gameManager.increaseDifficulty(gameCounter);
-
-			if (player->position.y <= 0)
-			{
-				player->position.y = 0;
-			}
-
-			world.update();
-			player->update();
-			gameManager.updateTargets();
-			gameManager.checkCollisions();
-			
-			screen->display();
- 			++gameCounter;
-			elapsed = nyt->getElapsedMs(true);
-
-			// DEBUG
-			/*
-			OutputDebugStringA(to_string(player.playerPosition.x).c_str());
-			OutputDebugStringA("\n");
-			*/
-			// ENDOF DEBUG
 		}
 	}
 
-	// wait the player to push down arrow key to stop the program
-	while ((GetKeyState(VK_DOWN) == 0)) {}
-
 	return 0;
 }
-

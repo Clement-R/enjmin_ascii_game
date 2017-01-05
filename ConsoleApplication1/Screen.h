@@ -19,5 +19,5 @@ class Screen
 
 		void read();
 		void display();
+		void displayScore(int score);
 };
-

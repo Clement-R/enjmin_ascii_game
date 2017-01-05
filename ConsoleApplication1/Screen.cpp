@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Screen.h"
 
+#include <string>
+
+using namespace std;
 
 Screen::Screen()
 {
@@ -18,10 +21,33 @@ Screen::~Screen()
 {
 }
 
-void Screen::read() {
+void Screen::read()
+{
 	ReadConsoleOutput(this->hOutput, (CHAR_INFO *)this->buffer, this->dwBufferSize, this->dwBufferCoord, &this->rcRegion);
 }
 
-void Screen::display() {
+void Screen::display()
+{
 	WriteConsoleOutput(this->hOutput, (CHAR_INFO *)this->buffer, this->dwBufferSize, this->dwBufferCoord, &this->rcRegion);
+}
+
+void Screen::displayScore(int score)
+{
+	string text = "Score : ";
+	int x = 35;
+	for (size_t i = 0; i < text.length(); i++)
+	{
+		this->buffer[0][x].Char.AsciiChar = (char)text[i];
+		this->buffer[0][x].Attributes = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
+		x++;
+	}
+
+	string sScore = to_string(score);
+
+	for (size_t i = 0; i < sScore.length(); i++)
+	{
+		this->buffer[0][x].Char.AsciiChar = sScore[i];
+		this->buffer[0][x].Attributes = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
+		x++;
+	}
 }
