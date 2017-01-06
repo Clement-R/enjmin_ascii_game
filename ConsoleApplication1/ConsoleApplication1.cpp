@@ -63,7 +63,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	int gameCounter = 0;
 	int lastKey = 0x00;
 
-	
 	double elapsed = 0;
 	bool isGameInitialized = true;
 

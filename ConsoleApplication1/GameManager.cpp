@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <Windows.h>
+#include <mmsystem.h>
 #include <algorithm>
 #include <string>
 
@@ -94,6 +95,7 @@ void GameManager::checkCollisions()
 		{
 			target->setToDestroy();
 			this->score++;
+			PlaySound(TEXT("coin.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		}
 	}
 }
