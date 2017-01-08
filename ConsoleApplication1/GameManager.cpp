@@ -3,6 +3,7 @@
 #include <mmsystem.h>
 #include <algorithm>
 #include <string>
+#include <fstream>
 
 #include "GameManager.h"
 
@@ -10,6 +11,7 @@ using namespace std;
 
 GameManager::GameManager()
 {
+	this->key = "i love xor encryption";
 	this->initialize();
 }
 
@@ -115,4 +117,44 @@ void GameManager::increaseDifficulty(int lastFrame)
 int GameManager::getScore()
 {
 	return this->score;
+}
+
+int GameManager::getHighscore()
+{
+	// Open file and get content
+	string score;
+	ifstream is("score");
+	getline(is, score);
+
+	// Decrypt content
+	string highScore = this->xor_score(score);
+	int nScore = stoi(highScore);
+	
+	return nScore;
+}
+
+void GameManager::setHighscore(int scoreToEncrypt)
+{
+	// Encrypt content
+	string newScore = this->xor_score(to_string(scoreToEncrypt));
+
+	// Write to file
+	ofstream scoreFile;
+	scoreFile.open("score");
+	scoreFile << newScore;
+	
+	// Close file
+	scoreFile.close();
+}
+
+string GameManager::xor_score(string score)
+{
+	string result = "";
+
+	for (size_t i = 0; i < score.size(); i++)
+	{
+		result[i] = score[i] ^ this->key[i % this->key.size()];
+	}
+	
+	return result;
 }

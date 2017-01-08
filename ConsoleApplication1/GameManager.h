@@ -34,9 +34,16 @@ public:
 
 	int getScore();
 
+	int getHighscore();
+
+	void setHighscore(int score);
+
+	string xor_score(string score);
+
 private:
 	list<Target*> targets;
 	Screen screen;
 	Player player;
 	int score;
+	string key;
 };

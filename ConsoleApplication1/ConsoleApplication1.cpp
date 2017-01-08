@@ -111,12 +111,18 @@ int _tmain(int argc, _TCHAR* argv[])
 					OutputDebugStringA(to_string(GetKeyState(0x52)).c_str());
 					OutputDebugStringA("\n");
 
+					// Check if it's a new highscore
+					if (gameManager.getScore() > gameManager.getHighscore())
+					{
+						gameManager.setHighscore(gameManager.getScore());
+					}
+
 					// Prepare for restart
 					isGameInitialized = false;
-					// Wait the player to push R key to stop the program
-					// 0x52 = R key
+
 					bool exit = false;
 
+					// Show restart instruction
 					string text = "Restart [R]";
 					int x = 35;
 					int y = 15;
@@ -127,8 +133,13 @@ int _tmain(int argc, _TCHAR* argv[])
 						x++;
 					}
 
+					// Show score
+					// TODO
+
 					screen->display();
 
+					// Wait the player to push R key to restart the game
+					// 0x52 = R key
 					while (!exit)
 					{
 						if(GetKeyState(0x52) < 0)
