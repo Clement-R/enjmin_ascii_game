@@ -33,18 +33,6 @@ void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][S
 	}
 }
 
-void drawMainMenu(Screen screen)
-{
-	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
-	{
-		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
-		{
-			screen.buffer[i][j].Char.AsciiChar = ' ';
-			screen.buffer[i][j].Attributes = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
-		}
-	}
-}
-
 int _tmain(int argc, _TCHAR* argv[])
 {
 	const int MS_PER_UPDATE = 30;
