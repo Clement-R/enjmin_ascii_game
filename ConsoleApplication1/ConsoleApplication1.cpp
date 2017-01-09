@@ -17,7 +17,6 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-
 #define MAP_WIDTH       480
 
 using namespace std;
@@ -30,6 +29,18 @@ void drawMap(char map[][MAP_WIDTH], CHAR_INFO (&buffer)[Screen::SCREEN_HEIGHT][S
 		{
 			buffer[i][j].Char.AsciiChar = map[i][j + cameraPosition.x];
 			buffer[i][j].Attributes = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
+		}
+	}
+}
+
+void drawMainMenu(Screen screen)
+{
+	for (int i = 0; i < Screen::SCREEN_HEIGHT; i++)
+	{
+		for (int j = 0; j < Screen::SCREEN_WIDTH; j++)
+		{
+			screen.buffer[i][j].Char.AsciiChar = ' ';
+			screen.buffer[i][j].Attributes = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
 		}
 	}
 }
@@ -133,8 +144,8 @@ int _tmain(int argc, _TCHAR* argv[])
 						x++;
 					}
 
-					// Show score
-					// TODO
+					// Show highscore
+					screen->displayScore("Highscore : ", gameManager.getHighscore());
 
 					screen->display();
 
@@ -204,12 +215,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				gameManager.increaseDifficulty(gameCounter);
 
+				// Avoid that the player go off screen on the top
 				if (player->position.y <= 0)
 				{
 					player->position.y = 0;
 				}
 
-				screen->displayScore(gameManager.getScore());
+				// Display score on top
+				screen->displayScore("Score : ", gameManager.getScore());
 
 				world.update();
 				player->update();
@@ -217,6 +230,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				gameManager.checkCollisions();
 
 				screen->display();
+				
 				++gameCounter;
 				elapsed = nyt->getElapsedMs(true);
 

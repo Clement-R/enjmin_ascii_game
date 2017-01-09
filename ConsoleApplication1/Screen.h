@@ -1,6 +1,9 @@
 #pragma once
 
 #include <windows.h>
+#include <iostream>
+
+using namespace std;
 
 class Screen
 {
@@ -19,5 +22,5 @@ class Screen
 
 		void read();
 		void display();
-		void displayScore(int score);
+		void displayScore(string header, int score);
 };

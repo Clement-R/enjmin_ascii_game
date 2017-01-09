@@ -45,5 +45,5 @@ private:
 	Screen screen;
 	Player player;
 	int score;
-	string key;
+	char key;
 };

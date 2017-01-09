@@ -31,13 +31,12 @@ void Screen::display()
 	WriteConsoleOutput(this->hOutput, (CHAR_INFO *)this->buffer, this->dwBufferSize, this->dwBufferCoord, &this->rcRegion);
 }
 
-void Screen::displayScore(int score)
+void Screen::displayScore(string header, int score)
 {
-	string text = "Score : ";
 	int x = 35;
-	for (size_t i = 0; i < text.length(); i++)
+	for (size_t i = 0; i < header.length(); i++)
 	{
-		this->buffer[0][x].Char.AsciiChar = (char)text[i];
+		this->buffer[0][x].Char.AsciiChar = (char)header[i];
 		this->buffer[0][x].Attributes = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED;
 		x++;
 	}
